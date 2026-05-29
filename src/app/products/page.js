@@ -5,65 +5,64 @@ import { playfair } from "../_components/brand-fonts";
 
 const productCategories = [
   {
-    title: "Calibration Platforms",
-    summary: "Bench and rack systems for drift-free measurements.",
+    title: "NATV & Distribution",
+    summary: "Headends, splitters, and signal management for clean TV delivery.",
     items: [
-      "SignalCal X4 Bench System",
-      "DeltaTrace Pro Rack",
-      "NanoSync Modular Stack",
-      "VectorSense Reference Hub",
+      "Headend amplifiers",
+      "Multiswitches",
+      "Distribution splitters",
+      "Signal analyzers",
     ],
   },
   {
-    title: "Monitoring Suites",
-    summary: "Real time diagnostics with automated anomaly detection.",
+    title: "Sound Systems",
+    summary: "Background music and event audio tuned to the room.",
     items: [
-      "PulseGuard Dashboard",
-      "ThermoLine Sensor Grid",
-      "Voltage Integrity Monitor",
-      "Stability Alert Service",
+      "Ceiling and wall speakers",
+      "Amplifiers and mixers",
+      "DSP controllers",
+      "Paging microphones",
     ],
   },
   {
-    title: "Field Instruments",
-    summary: "Portable tools for on site calibration and verification.",
+    title: "LED & Display",
+    summary: "Indoor and outdoor LED screens with control and mounting.",
     items: [
-      "DriftScout Handheld",
-      "PhaseLock Portable",
-      "CleanRoom Probe Kit",
-      "Shielded Cable Analyzer",
+      "LED video panels",
+      "Controller processors",
+      "Mounting structures",
+      "Content players",
     ],
   },
   {
-    title: "Accessories",
-    summary: "Precision components to complete every deployment.",
+    title: "CCTV & Security",
+    summary: "IP surveillance with recording, monitoring, and access control.",
     items: [
-      "Low Noise Reference Cables",
-      "Thermal Control Capsules",
-      "Calibration Trace Packs",
-      "Secure Data Bridge",
+      "IP cameras",
+      "NVR recorders",
+      "PoE switches",
+      "Access control readers",
     ],
   },
 ];
 
 const featuredBundles = [
   {
-    title: "Clean Room Starter",
-    detail:
-      "A complete calibration kit for fabs and microelectronics labs.",
+    title: "Venue AV Package",
+    detail: "NATV distribution, zoned audio, and control built for venues.",
     includes: [
-      "SignalCal X4 Bench System",
-      "ThermoLine Sensor Grid",
-      "Traceable reference logs",
+      "NATV headend + distribution",
+      "Zoned audio with paging",
+      "Control rack and labeling",
     ],
   },
   {
-    title: "Field Response Kit",
-    detail: "Rapid diagnostics for remote sites and mobile teams.",
+    title: "Security & Monitoring Suite",
+    detail: "CCTV coverage with recording and remote access for managers.",
     includes: [
-      "DriftScout Handheld",
-      "PhaseLock Portable",
-      "Secure Data Bridge",
+      "IP cameras + NVR storage",
+      "Remote viewing setup",
+      "Network switches and cabling",
     ],
   },
 ];
@@ -84,11 +83,12 @@ export default function ProductsPage() {
             <h1
               className={`${playfair.className} text-4xl font-semibold text-[#0c0c2a] sm:text-5xl`}
             >
-              Precision tools across every category.
+              Equipment we specify and install.
             </h1>
             <p className="max-w-2xl text-lg leading-8 text-[#3d3d5f]">
-              Browse calibration platforms, monitoring suites, and field
-              instruments built to keep measurements stable in any environment.
+              We supply gear as part of full design and installation projects,
+              not as a standalone shop. These are the categories we typically
+              source and install.
             </p>
           </div>
         </section>
@@ -163,7 +163,7 @@ export default function ProductsPage() {
               className="rounded-full bg-[#00004d] px-6 py-3 text-xs font-semibold uppercase tracking-[0.32em] text-white transition hover:bg-[#000066]"
               href="/contact"
             >
-              Talk to Product Team
+              Talk to Project Team
             </Link>
           </div>
         </section>

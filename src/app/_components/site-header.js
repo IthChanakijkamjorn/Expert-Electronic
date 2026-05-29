@@ -21,7 +21,7 @@ export default function SiteHeader() {
               Expert Electronic
             </p>
             <p className={`${playfair.className} text-lg font-semibold`}>
-              Signal Intelligence
+              Design & Installation
             </p>
           </div>
         </div>

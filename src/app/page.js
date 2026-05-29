@@ -14,21 +14,22 @@ export default function Home() {
               className="text-xs font-semibold uppercase tracking-[0.4em] text-[#00004d]/70 animate-fade-up"
               style={{ animationDelay: "0ms" }}
             >
-              Precision Electronics Studio
+              Design & Installation Studio
             </p>
             <h1
               className={`${playfair.className} mt-5 text-4xl font-semibold leading-tight text-[#0c0c2a] sm:text-5xl lg:text-6xl animate-fade-up`}
               style={{ animationDelay: "90ms" }}
             >
-              Calibrate every signal, capture every insight.
+              Plan, design, and install NATV, sound, LED, and CCTV systems.
             </h1>
             <p
               className="mt-5 max-w-xl text-lg leading-8 text-[#3d3d5f] animate-fade-up"
               style={{ animationDelay: "170ms" }}
             >
-              Expert Electronic crafts diagnostic platforms for labs, clean rooms,
-              and field teams who cannot afford drift. We align hardware,
-              firmware, and data so measurements stay trusted under pressure.
+              We deliver end-to-end projects: survey, design, cabling,
+              installation, testing, and handover. From homes to venues and
+              commercial sites, we build systems that are clean, reliable, and
+              easy to maintain.
             </p>
             <div
               className="mt-8 flex flex-col gap-3 sm:flex-row animate-fade-up"
@@ -38,13 +39,13 @@ export default function Home() {
                 className="rounded-full bg-[#00004d] px-6 py-3 text-xs font-semibold uppercase tracking-[0.32em] text-white transition hover:bg-[#000066]"
                 href="/contact"
               >
-                Request a Demo
+                Request a Site Visit
               </Link>
               <Link
                 className="rounded-full border border-[#00004d]/20 px-6 py-3 text-xs font-semibold uppercase tracking-[0.32em] text-[#00004d] transition hover:border-[#00004d]/50"
                 href="/products"
               >
-                Browse Catalog
+                View Products
               </Link>
             </div>
             <div
@@ -52,16 +53,18 @@ export default function Home() {
               style={{ animationDelay: "330ms" }}
             >
               <div>
-                <p className="text-2xl font-semibold text-[#00004d]">24h</p>
-                <p>Calibration turnaround</p>
+                <p className="text-2xl font-semibold text-[#00004d]">
+                  End-to-end
+                </p>
+                <p>Design to handover</p>
               </div>
               <div>
-                <p className="text-2xl font-semibold text-[#00004d]">98.7%</p>
-                <p>Signal accuracy</p>
+                <p className="text-2xl font-semibold text-[#00004d]">Onsite</p>
+                <p>Install and testing</p>
               </div>
               <div>
-                <p className="text-2xl font-semibold text-[#00004d]">40+</p>
-                <p>Lab deployments</p>
+                <p className="text-2xl font-semibold text-[#00004d]">Ongoing</p>
+                <p>Support and maintenance</p>
               </div>
             </div>
           </div>
@@ -75,20 +78,20 @@ export default function Home() {
               <div className="absolute bottom-6 left-6 h-28 w-28 rounded-full bg-[#0c5f8c]/25 blur-2xl" />
               <div className="relative">
                 <p className="text-xs font-semibold uppercase tracking-[0.35em] text-[#00004d]/70">
-                  Live Diagnostics
+                  Project Status
                 </p>
                 <h2
                   className={`${playfair.className} mt-4 text-3xl font-semibold text-[#121233]`}
                 >
-                  Signal Lab Snapshot
+                  Installation Snapshot
                 </h2>
                 <div className="mt-6 space-y-4">
                   <div className="rounded-2xl border border-[#00004d]/10 bg-[#f5f5ff] p-4">
                     <div className="flex items-center justify-between text-sm">
                       <span className="font-semibold text-[#00004d]">
-                        Voltage Drift
+                        Site Survey
                       </span>
-                      <span className="text-[#1f1f3d]">0.02%</span>
+                      <span className="text-[#1f1f3d]">86%</span>
                     </div>
                     <div className="mt-3 h-2 w-full rounded-full bg-white">
                       <div className="h-2 w-[86%] rounded-full bg-[#00004d]" />
@@ -97,19 +100,19 @@ export default function Home() {
                   <div className="rounded-2xl border border-[#00004d]/10 bg-white p-4">
                     <div className="flex items-center justify-between text-sm">
                       <span className="font-semibold text-[#00004d]">
-                        Thermal Stability
+                        Cabling Plan
                       </span>
                       <span className="text-[#1f1f3d]">Ready</span>
                     </div>
                     <div className="mt-3 flex items-center gap-3 text-xs text-[#6b6b8f]">
                       <span className="rounded-full bg-[#e6ecff] px-3 py-1">
-                        0.4C delta
+                        Rack layout
                       </span>
                       <span className="rounded-full bg-[#fff2d9] px-3 py-1">
-                        18 sensors
+                        Cable routes
                       </span>
                       <span className="rounded-full bg-[#e9f4f7] px-3 py-1">
-                        Auto-tuned
+                        Power plan
                       </span>
                     </div>
                   </div>
@@ -117,12 +120,12 @@ export default function Home() {
                 <div className="mt-6 flex items-center justify-between rounded-2xl border border-[#00004d]/10 bg-[#0f102c] px-4 py-3 text-white">
                   <div>
                     <p className="text-xs uppercase tracking-[0.3em] text-white/70">
-                      Sync Window
+                      Go-live Window
                     </p>
-                    <p className="text-lg font-semibold">02:14:22</p>
+                    <p className="text-lg font-semibold">Week 02</p>
                   </div>
                   <span className="rounded-full bg-white/20 px-3 py-1 text-xs">
-                    Locked
+                    Scheduled
                   </span>
                 </div>
               </div>
@@ -138,7 +141,7 @@ export default function Home() {
             <h2
               className={`${playfair.className} text-3xl font-semibold text-[#121233]`}
             >
-              Built for accuracy, shaped for teams.
+              Designed for real-world installs.
             </h2>
           </div>
           <div className="mt-8 grid gap-6 md:grid-cols-3">
@@ -147,14 +150,14 @@ export default function Home() {
               style={{ animationDelay: "120ms" }}
             >
               <p className="text-xs font-semibold uppercase tracking-[0.35em] text-[#00004d]/70">
-                Co-Design
+                Planning
               </p>
               <h3 className="mt-4 text-xl font-semibold text-[#15152e]">
-                Instruments matched to your workflow.
+                Site surveys and clear system drawings.
               </h3>
               <p className="mt-3 text-sm leading-6 text-[#4b4b6a]">
-                We map every calibration step before we ship, so your teams stay
-                focused on results not rework.
+                We document every run and connection so installation is tidy and
+                future upgrades are easy.
               </p>
             </div>
             <div
@@ -162,14 +165,14 @@ export default function Home() {
               style={{ animationDelay: "200ms" }}
             >
               <p className="text-xs font-semibold uppercase tracking-[0.35em] text-[#00004d]/70">
-                Validation
+                Installation
               </p>
               <h3 className="mt-4 text-xl font-semibold text-[#15152e]">
-                Live analytics that spot drift early.
+                Clean cabling, tested endpoints, labeled racks.
               </h3>
               <p className="mt-3 text-sm leading-6 text-[#4b4b6a]">
-                Our monitoring layer flags anomalies across fleets so calibration
-                stays reliable between scheduled checks.
+                We keep systems reliable with proper testing, commissioning, and
+                handover walkthroughs.
               </p>
             </div>
             <div
@@ -180,11 +183,11 @@ export default function Home() {
                 Support
               </p>
               <h3 className="mt-4 text-xl font-semibold text-[#15152e]">
-                Expert teams on call worldwide.
+                Maintenance plans and fast callouts.
               </h3>
               <p className="mt-3 text-sm leading-6 text-[#4b4b6a]">
-                Remote diagnostics, onsite training, and calibration service all
-                inside a single response channel.
+                We stay involved after go-live with upgrades, servicing, and
+                rapid troubleshooting.
               </p>
             </div>
           </div>
@@ -198,14 +201,14 @@ export default function Home() {
             <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
               <div>
                 <p className="text-xs font-semibold uppercase tracking-[0.35em] text-white/70">
-                  Ready to calibrate
+                  Ready to build
                 </p>
                 <h2 className={`${playfair.className} mt-4 text-3xl font-semibold`}>
-                  Let us map your next measurement system.
+                  Let us plan your next installation.
                 </h2>
                 <p className="mt-4 max-w-xl text-sm leading-6 text-white/70">
-                  Share your requirements and we will design a deployment plan
-                  with calibration, monitoring, and training built in.
+                  Share your requirements and we will create a full design and
+                  installation plan with commissioning and support.
                 </p>
               </div>
               <Link

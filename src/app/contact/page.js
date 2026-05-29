@@ -18,11 +18,12 @@ export default function ContactPage() {
             <h1
               className={`${playfair.className} text-4xl font-semibold text-[#0c0c2a] sm:text-5xl`}
             >
-              Tell us what you need to measure.
+              Plan your installation with us.
             </h1>
             <p className="max-w-2xl text-lg leading-8 text-[#3d3d5f]">
-              Share your environment, target tolerances, and timeline. We will
-              respond with a tailored calibration and monitoring plan.
+              Tell us about your site, timeline, and the systems you need. We
+              will schedule a survey and outline the design and installation
+              plan.
             </p>
           </div>
 
@@ -37,8 +38,8 @@ export default function ContactPage() {
                 Direct line
               </h2>
               <p className="mt-3 text-sm leading-6 text-[#4b4b6a]">
-                Our response team covers lab, clean room, and field deployments.
-                Provide the core details and we will match you with the right
+                We design and install NATV, sound systems, LED displays, and
+                CCTV. Share the basics and we will match you with the right
                 specialist.
               </p>
               <div className="mt-6 space-y-4 text-sm text-[#2f2f4b]">
@@ -66,14 +67,14 @@ export default function ContactPage() {
               <div className="mt-8 rounded-2xl border border-[#00004d]/10 bg-white p-4 text-sm text-[#4b4b6a]">
                 <p className="font-semibold text-[#00004d]">Response window</p>
                 <p className="mt-2">Weekdays 08:00 - 19:00 GMT</p>
-                <p className="mt-1">Emergency calibration within 24 hours</p>
+                <p className="mt-1">Emergency callouts available</p>
               </div>
               <div className="mt-6 text-sm text-[#4b4b6a]">
                 <p className="font-semibold text-[#00004d]">Helpful details</p>
                 <ul className="mt-2 space-y-2">
-                  <li>Target accuracy or tolerance range</li>
-                  <li>Lab environment or field conditions</li>
-                  <li>Preferred installation window</li>
+                  <li>Site address and size</li>
+                  <li>Systems needed (NATV, sound, LED, CCTV)</li>
+                  <li>Preferred survey and installation window</li>
                 </ul>
               </div>
             </div>
@@ -111,7 +112,7 @@ export default function ContactPage() {
                   <input
                     className="mt-2 w-full rounded-2xl border border-[#00004d]/15 bg-white px-4 py-3 text-sm text-[#15152e] shadow-sm outline-none transition focus:border-[#00004d]/50 focus:ring-2 focus:ring-[#00004d]/15"
                     name="company"
-                    placeholder="Lab or organization"
+                    placeholder="Company or site"
                     type="text"
                   />
                 </label>
@@ -121,10 +122,11 @@ export default function ContactPage() {
                     className="mt-2 w-full rounded-2xl border border-[#00004d]/15 bg-white px-4 py-3 text-sm text-[#15152e] shadow-sm outline-none transition focus:border-[#00004d]/50 focus:ring-2 focus:ring-[#00004d]/15"
                     name="topic"
                   >
-                    <option>Calibration</option>
-                    <option>Diagnostics</option>
-                    <option>Monitoring</option>
-                    <option>Partnership</option>
+                    <option>NATV</option>
+                    <option>Sound system</option>
+                    <option>LED display</option>
+                    <option>CCTV</option>
+                    <option>Multiple systems</option>
                   </select>
                 </label>
                 <label className="text-xs font-semibold uppercase tracking-[0.35em] text-[#00004d]/70 sm:col-span-2">
@@ -132,7 +134,7 @@ export default function ContactPage() {
                   <textarea
                     className="mt-2 w-full resize-none rounded-2xl border border-[#00004d]/15 bg-white px-4 py-3 text-sm text-[#15152e] shadow-sm outline-none transition focus:border-[#00004d]/50 focus:ring-2 focus:ring-[#00004d]/15"
                     name="message"
-                    placeholder="Tell us about your system, sensors, and required accuracy."
+                    placeholder="Tell us about your site, rooms, and system requirements."
                     required
                     rows={6}
                   />

@@ -5,52 +5,52 @@ import { playfair } from "../_components/brand-fonts";
 
 const caseStudies = [
   {
-    title: "Semiconductor Yield Lab",
-    sector: "Microelectronics",
+    title: "Hotel AV & NATV Refresh",
+    sector: "Hospitality",
     summary:
-      "Rebuilt reference systems for high volume wafer inspection with continuous drift tracking.",
+      "Replaced aging NATV distribution, added zoned audio, and cleaned up rack wiring.",
     results: [
-      "31% reduction in variance",
-      "24 hour calibration cycles",
-      "Fleet level anomaly alerts",
+      "Multi-zone control",
+      "Clean rack build",
+      "Guest TV upgrade",
     ],
   },
   {
-    title: "Clean Room Sensor Grid",
-    sector: "Pharma Manufacturing",
+    title: "Commercial CCTV Rollout",
+    sector: "Retail",
     summary:
-      "Installed a multi zone monitoring stack with automated compliance reporting.",
+      "Designed camera coverage and NVR storage across multiple sites.",
     results: [
-      "98.7% signal stability",
-      "18 sensors synchronized",
-      "Audit ready logs in real time",
+      "Full perimeter coverage",
+      "Remote viewing",
+      "48-hour recording archive",
     ],
   },
   {
-    title: "Field Diagnostics Network",
-    sector: "Energy Systems",
+    title: "LED Signage Install",
+    sector: "Events Venue",
     summary:
-      "Delivered portable calibration kits and remote dashboards for regional teams.",
+      "Installed an indoor LED wall with control room integration and training.",
     results: [
-      "40 sites synchronized",
-      "2 hour response time",
-      "Unified calibration playbooks",
+      "Bright, uniform panels",
+      "Fast changeovers",
+      "Operator training",
     ],
   },
 ];
 
 const deliverySteps = [
   {
-    title: "Discovery",
-    detail: "We map your measurement chain and define tolerances.",
+    title: "Survey & Scope",
+    detail: "We visit the site, map cable runs, and define coverage.",
   },
   {
-    title: "Calibration Design",
-    detail: "Hardware, firmware, and analytics are aligned to your lab.",
+    title: "Design & Approval",
+    detail: "We deliver drawings, equipment lists, and install timelines.",
   },
   {
-    title: "Deployment",
-    detail: "Systems ship with training, monitoring, and validation scripts.",
+    title: "Install & Handover",
+    detail: "We install, test, label, and train your team.",
   },
 ];
 
@@ -70,11 +70,11 @@ export default function SolutionsPage() {
             <h1
               className={`${playfair.className} text-4xl font-semibold text-[#0c0c2a] sm:text-5xl`}
             >
-              Recent work across high precision teams.
+              Projects delivered across homes, venues, and commercial sites.
             </h1>
             <p className="max-w-2xl text-lg leading-8 text-[#3d3d5f]">
-              Our calibration teams support labs, fabs, and field operations that
-              demand consistent signal integrity.
+              We design and install NATV, sound, LED, and CCTV systems tailored
+              to each site and its operational needs.
             </p>
           </div>
           <div
@@ -82,16 +82,20 @@ export default function SolutionsPage() {
             style={{ animationDelay: "120ms" }}
           >
             <div>
-              <p className="text-2xl font-semibold text-[#00004d]">120+</p>
-              <p>Deployments delivered</p>
+              <p className="text-2xl font-semibold text-[#00004d]">
+                Survey-first
+              </p>
+              <p>Every project starts onsite</p>
             </div>
             <div>
-              <p className="text-2xl font-semibold text-[#00004d]">15</p>
-              <p>Countries supported</p>
+              <p className="text-2xl font-semibold text-[#00004d]">Design-led</p>
+              <p>Clear drawings before install</p>
             </div>
             <div>
-              <p className="text-2xl font-semibold text-[#00004d]">6</p>
-              <p>Industries served</p>
+              <p className="text-2xl font-semibold text-[#00004d]">
+                Install-ready
+              </p>
+              <p>Testing and handover included</p>
             </div>
           </div>
         </section>
@@ -149,10 +153,10 @@ export default function SolutionsPage() {
           >
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.35em] text-white/70">
-                Ready to collaborate
+                Ready to plan
               </p>
               <h2 className={`${playfair.className} mt-3 text-2xl font-semibold`}>
-                Let us design the next calibration plan.
+                Let us design the next system for your site.
               </h2>
             </div>
             <Link
