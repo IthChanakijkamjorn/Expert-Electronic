@@ -21,7 +21,7 @@ export async function onRequestPost(context) {
       },
       body: JSON.stringify({
         from: "Expert Electronic <onboarding@resend.dev>",
-        to: "ithnine12925@gmail.com",
+        to: "ithcha2525@gmail.com",
         subject: `New enquiry from ${fullName}`,
         html: `
           <h2>New Contact Form Submission</h2>
