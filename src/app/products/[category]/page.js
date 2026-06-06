@@ -19,7 +19,7 @@ export async function generateStaticParams() {
 
 async function getCategoryProducts(category) {
   return client.fetch(
-    `*[_type == "product" && category == $category] | order(name asc) {
+    `*[_type == "product" && category == $category && defined(slug.current)] | order(name asc) {
       _id,
       name,
       "slug": slug.current,

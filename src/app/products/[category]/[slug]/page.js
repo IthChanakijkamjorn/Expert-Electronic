@@ -121,7 +121,7 @@ export default async function ProductPage({ params }) {
                   {product.name}
                 </h1>
                 {product.brand && (
-                  <p className="mt-1 text-sm text-[#00004d]/60">by {product.brand}</p>
+                  <p className="mt-1 text-sm text-[#00004d]/60">{product.brand}</p>
                 )}
               </div>
 
