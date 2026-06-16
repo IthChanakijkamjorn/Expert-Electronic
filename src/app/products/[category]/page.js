@@ -8,6 +8,7 @@ import { client } from "../../../lib/sanity";
 
 const CATEGORIES = {
   natv: "NATV & Distribution",
+  "micro-headend": "Micro Headend",
   sound: "Sound Systems",
   led: "LED & Display",
   cctv: "CCTV & Security",
