@@ -12,6 +12,12 @@ const CATEGORIES = [
       "Centralised TV distribution, digital headends, and MATV/CATV systems for hotels, hospitals, and large buildings.",
   },
   {
+    value: "micro-headend",
+    label: "Micro Headend",
+    description:
+      "Compact headend solutions for converting and distributing HDMI signals over RF networks.",
+  },
+  {
     value: "sound",
     label: "Sound Systems",
     description:
