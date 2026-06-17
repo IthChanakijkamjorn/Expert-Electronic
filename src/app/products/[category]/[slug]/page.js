@@ -6,13 +6,12 @@ import SiteShell from "../../../_components/site-shell";
 import { playfair } from "../../../_components/brand-fonts";
 import { client } from "../../../../lib/sanity";
 
-const CATEGORIES = {
-  natv: "NATV & Distribution",
-  "micro-headend": "Micro Headend",
-  sound: "Sound Systems",
-  led: "LED & Display",
-  cctv: "CCTV & Security",
-};
+function slugToLabel(slug) {
+  return slug
+    .split("-")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+}
 
 export async function generateStaticParams() {
   const products = await client.fetch(
@@ -49,12 +48,22 @@ async function getProduct(slug) {
   );
 }
 
+// Detect if specs are flat rows (Software format: [{label, value}])
+// vs tabbed format ([{tabName, sections:[{rows:[...]}]}])
+function isFlatSpecs(specifications) {
+  if (!specifications || specifications.length === 0) return false;
+  const first = specifications[0];
+  return typeof first.label === "string" && typeof first.value === "string";
+}
+
 export default async function ProductPage({ params }) {
   const { category, slug } = await params;
-  if (!CATEGORIES[category]) notFound();
 
   const product = await getProduct(slug);
   if (!product) notFound();
+
+  const categoryLabel = slugToLabel(category);
+  const flatSpecs = isFlatSpecs(product.specifications);
 
   return (
     <SiteShell>
@@ -71,7 +80,7 @@ export default async function ProductPage({ params }) {
               href={`/products/${category}`}
               className="hover:text-[#00004d]"
             >
-              {CATEGORIES[category]}
+              {categoryLabel}
             </Link>
             <span>/</span>
             <span className="text-[#00004d] truncate max-w-[160px]">
@@ -81,10 +90,7 @@ export default async function ProductPage({ params }) {
 
           <div className="mt-10 grid gap-12 lg:grid-cols-[1fr_1.1fr]">
             {/* Image */}
-            <div
-              className="animate-fade-up"
-              style={{ animationDelay: "0ms" }}
-            >
+            <div className="animate-fade-up" style={{ animationDelay: "0ms" }}>
               {product.imageUrl ? (
                 <div className="relative h-80 w-full overflow-hidden rounded-3xl bg-white shadow-[0_18px_40px_rgba(0,0,77,0.12)]">
                   <Image
@@ -116,7 +122,7 @@ export default async function ProductPage({ params }) {
 
               <div>
                 <p className="text-xs font-semibold uppercase tracking-[0.35em] text-[#00004d]/60">
-                  {CATEGORIES[product.category]}
+                  {categoryLabel}
                 </p>
                 <h1
                   className={`${playfair.className} mt-2 text-3xl font-semibold text-[#0c0c2a] sm:text-4xl`}
@@ -189,37 +195,63 @@ export default async function ProductPage({ params }) {
               <h2 className={`${playfair.className} text-2xl font-semibold text-[#0c0c2a] mb-6`}>
                 Specifications
               </h2>
-              <div className="flex flex-col gap-4">
-                {product.specifications.map((tab) => (
-                  <div key={tab._key} className="rounded-2xl border border-[#00004d]/10 bg-white overflow-hidden">
-                    <div className="px-6 py-4 bg-[#00004d]/5 border-b border-[#00004d]/10">
-                      <p className="text-xs font-semibold uppercase tracking-[0.3em] text-[#00004d]">
-                        {tab.tabName}
-                      </p>
-                    </div>
-                    {tab.sections && tab.sections.map((section) => (
-                      <div key={section._key}>
-                        {section.sectionName && (
-                          <div className="px-6 py-3 bg-[#00004d]/[0.02] border-b border-[#00004d]/5">
-                            <p className="text-xs font-semibold text-[#00004d]/70 uppercase tracking-widest">
-                              {section.sectionName}
-                            </p>
-                          </div>
-                        )}
-                        {section.rows && section.rows.map((row, i) => (
-                          <div
-                            key={row._key}
-                            className={`flex px-6 py-3 text-sm border-b border-[#00004d]/5 last:border-0 ${i % 2 === 0 ? "bg-white" : "bg-[#00004d]/[0.02]"}`}
-                          >
-                            <span className="w-1/2 font-medium text-[#15152e]">{row.label}</span>
-                            <span className="w-1/2 text-[#4b4b6a]">{row.value}</span>
-                          </div>
-                        ))}
-                      </div>
-                    ))}
+
+              {/* Flat format (Software type) */}
+              {flatSpecs ? (
+                <div className="rounded-2xl border border-[#00004d]/10 bg-white overflow-hidden">
+                  <div className="px-6 py-4 bg-[#00004d]/5 border-b border-[#00004d]/10">
+                    <p className="text-xs font-semibold uppercase tracking-[0.3em] text-[#00004d]">
+                      Technical Data
+                    </p>
                   </div>
-                ))}
-              </div>
+                  {product.specifications.map((row, i) => (
+                    <div
+                      key={row._key || i}
+                      className={`flex px-6 py-3 text-sm border-b border-[#00004d]/5 last:border-0 ${
+                        i % 2 === 0 ? "bg-white" : "bg-[#00004d]/[0.02]"
+                      }`}
+                    >
+                      <span className="w-1/2 font-medium text-[#15152e]">{row.label}</span>
+                      <span className="w-1/2 text-[#4b4b6a]">{row.value}</span>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                /* Tabbed format (Hardware type) */
+                <div className="flex flex-col gap-4">
+                  {product.specifications.map((tab) => (
+                    <div key={tab._key} className="rounded-2xl border border-[#00004d]/10 bg-white overflow-hidden">
+                      <div className="px-6 py-4 bg-[#00004d]/5 border-b border-[#00004d]/10">
+                        <p className="text-xs font-semibold uppercase tracking-[0.3em] text-[#00004d]">
+                          {tab.tabName}
+                        </p>
+                      </div>
+                      {tab.sections && tab.sections.map((section) => (
+                        <div key={section._key}>
+                          {section.sectionName && (
+                            <div className="px-6 py-3 bg-[#00004d]/[0.02] border-b border-[#00004d]/5">
+                              <p className="text-xs font-semibold text-[#00004d]/70 uppercase tracking-widest">
+                                {section.sectionName}
+                              </p>
+                            </div>
+                          )}
+                          {section.rows && section.rows.map((row, i) => (
+                            <div
+                              key={row._key}
+                              className={`flex px-6 py-3 text-sm border-b border-[#00004d]/5 last:border-0 ${
+                                i % 2 === 0 ? "bg-white" : "bg-[#00004d]/[0.02]"
+                              }`}
+                            >
+                              <span className="w-1/2 font-medium text-[#15152e]">{row.label}</span>
+                              <span className="w-1/2 text-[#4b4b6a]">{row.value}</span>
+                            </div>
+                          ))}
+                        </div>
+                      ))}
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           )}
         </section>

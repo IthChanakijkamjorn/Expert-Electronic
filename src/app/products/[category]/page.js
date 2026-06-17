@@ -6,16 +6,17 @@ import SiteShell from "../../_components/site-shell";
 import { playfair } from "../../_components/brand-fonts";
 import { client } from "../../../lib/sanity";
 
-const CATEGORIES = {
-  natv: "NATV & Distribution",
-  "micro-headend": "Micro Headend",
-  sound: "Sound Systems",
-  led: "LED & Display",
-  cctv: "CCTV & Security",
-};
+function slugToLabel(slug) {
+  return slug
+    .split("-")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+}
 
 export async function generateStaticParams() {
-  return Object.keys(CATEGORIES).map((value) => ({ category: value }));
+  const products = await client.fetch(`*[_type == "product" && defined(category)] { category }`);
+  const categories = [...new Set(products.map((p) => p.category).filter(Boolean))];
+  return categories.map((category) => ({ category }));
 }
 
 async function getCategoryProducts(category) {
@@ -34,9 +35,19 @@ async function getCategoryProducts(category) {
 
 export default async function CategoryPage({ params }) {
   const { category } = await params;
-  if (!CATEGORIES[category]) notFound();
 
   const products = await getCategoryProducts(category);
+
+  // If no products found and category doesn't exist at all, show 404
+  if (!products || products.length === 0) {
+    const exists = await client.fetch(
+      `count(*[_type == "product" && category == $category])`,
+      { category }
+    );
+    if (exists === 0) notFound();
+  }
+
+  const label = slugToLabel(category);
 
   return (
     <SiteShell>
@@ -56,7 +67,7 @@ export default async function CategoryPage({ params }) {
             style={{ animationDelay: "0ms" }}
           >
             <p className="text-xs font-semibold uppercase tracking-[0.4em] text-[#00004d]/70">
-              {CATEGORIES[category]}
+              {label}
             </p>
             <h1
               className={`${playfair.className} text-4xl font-semibold text-[#0c0c2a] sm:text-5xl`}

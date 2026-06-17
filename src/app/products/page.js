@@ -4,50 +4,27 @@ import SiteShell from "../_components/site-shell";
 import { playfair } from "../_components/brand-fonts";
 import { client } from "../../lib/sanity";
 
-const CATEGORIES = [
-  {
-    value: "natv",
-    label: "NATV & Distribution",
-    description:
-      "Centralised TV distribution, digital headends, and MATV/CATV systems for hotels, hospitals, and large buildings.",
-  },
-  {
-    value: "micro-headend",
-    label: "Micro Headend",
-    description:
-      "Compact headend solutions for converting and distributing HDMI signals over RF networks.",
-  },
-  {
-    value: "sound",
-    label: "Sound Systems",
-    description:
-      "PA systems, background music, conference audio, and full professional sound solutions.",
-  },
-  {
-    value: "led",
-    label: "LED & Display",
-    description:
-      "Indoor and outdoor LED panels, video walls, digital signage, and display controllers.",
-  },
-  {
-    value: "cctv",
-    label: "CCTV & Security",
-    description:
-      "IP cameras, NVRs, access control, and complete surveillance solutions.",
-  },
-];
+function slugToLabel(slug) {
+  return slug
+    .split("-")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+}
 
-async function getCounts() {
+async function getCategoriesWithCounts() {
   const products = await client.fetch(`*[_type == "product"] { category }`);
   const counts = {};
   products.forEach((p) => {
-    counts[p.category] = (counts[p.category] || 0) + 1;
+    if (p.category) {
+      counts[p.category] = (counts[p.category] || 0) + 1;
+    }
   });
   return counts;
 }
 
 export default async function ProductsPage() {
-  const counts = await getCounts();
+  const counts = await getCategoriesWithCounts();
+  const categories = Object.keys(counts).sort();
 
   return (
     <SiteShell>
@@ -74,25 +51,21 @@ export default async function ProductsPage() {
           </div>
 
           <div className="mt-10 grid gap-6 sm:grid-cols-2">
-            {CATEGORIES.map((cat, index) => (
+            {categories.map((cat, index) => (
               <Link
-                key={cat.value}
-                href={`/products/${cat.value}`}
+                key={cat}
+                href={`/products/${cat}`}
                 className="group rounded-3xl border border-white/70 bg-white/70 p-8 shadow-[0_18px_40px_rgba(0,0,77,0.12)] transition hover:shadow-[0_24px_50px_rgba(0,0,77,0.18)] hover:-translate-y-1 animate-fade-up"
                 style={{ animationDelay: `${index * 80}ms` }}
               >
                 <p className="text-xs font-semibold uppercase tracking-[0.35em] text-[#00004d]/60">
-                  {counts[cat.value] || 0} product
-                  {counts[cat.value] !== 1 ? "s" : ""}
+                  {counts[cat]} product{counts[cat] !== 1 ? "s" : ""}
                 </p>
                 <h2
                   className={`${playfair.className} mt-2 text-2xl font-semibold text-[#121233] group-hover:text-[#00004d]`}
                 >
-                  {cat.label}
+                  {slugToLabel(cat)}
                 </h2>
-                <p className="mt-3 text-sm leading-6 text-[#4b4b6a]">
-                  {cat.description}
-                </p>
                 <p className="mt-4 text-xs font-semibold uppercase tracking-[0.3em] text-[#00004d]">
                   View all &rarr;
                 </p>
