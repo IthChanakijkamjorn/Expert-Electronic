@@ -3,28 +3,33 @@ import SiteHeader from "../_components/site-header";
 import SiteShell from "../_components/site-shell";
 import { playfair } from "../_components/brand-fonts";
 import { client } from "../../lib/sanity";
+import ProductsBrowser from "./products-browser";
+import { normalizeGroupValue } from "./products-utils";
 
-function slugToLabel(slug) {
-  return slug
-    .split("-")
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(" ");
-}
+async function getProducts() {
+  const products = await client.fetch(
+    `*[_type == "product" && defined(slug.current)] | order(name asc) {
+      _id,
+      name,
+      "slug": slug.current,
+      brand,
+      category,
+      shortDescription,
+      description,
+      "imageUrl": image.asset->url
+    }`
+  );
 
-async function getCategoriesWithCounts() {
-  const products = await client.fetch(`*[_type == "product"] { category }`);
-  const counts = {};
-  products.forEach((p) => {
-    if (p.category) {
-      counts[p.category] = (counts[p.category] || 0) + 1;
-    }
-  });
-  return counts;
+  return products
+    .filter((product) => product.category && product.slug)
+    .map((product) => ({
+      ...product,
+      brand: normalizeGroupValue(product.brand, "Other"),
+    }));
 }
 
 export default async function ProductsPage() {
-  const counts = await getCategoriesWithCounts();
-  const categories = Object.keys(counts).sort();
+  const products = await getProducts();
 
   return (
     <SiteShell>
@@ -46,32 +51,12 @@ export default async function ProductsPage() {
             </h1>
             <p className="max-w-2xl text-lg leading-8 text-[#3d3d5f]">
               We supply gear as part of full design and installation projects.
-              Browse by category below.
+              Browse by brand first, then narrow down by category or live
+              search.
             </p>
           </div>
 
-          <div className="mt-10 grid gap-6 sm:grid-cols-2">
-            {categories.map((cat, index) => (
-              <Link
-                key={cat}
-                href={`/products/${cat}`}
-                className="group rounded-3xl border border-white/70 bg-white/70 p-8 shadow-[0_18px_40px_rgba(0,0,77,0.12)] transition hover:shadow-[0_24px_50px_rgba(0,0,77,0.18)] hover:-translate-y-1 animate-fade-up"
-                style={{ animationDelay: `${index * 80}ms` }}
-              >
-                <p className="text-xs font-semibold uppercase tracking-[0.35em] text-[#00004d]/60">
-                  {counts[cat]} product{counts[cat] !== 1 ? "s" : ""}
-                </p>
-                <h2
-                  className={`${playfair.className} mt-2 text-2xl font-semibold text-[#121233] group-hover:text-[#00004d]`}
-                >
-                  {slugToLabel(cat)}
-                </h2>
-                <p className="mt-4 text-xs font-semibold uppercase tracking-[0.3em] text-[#00004d]">
-                  View all &rarr;
-                </p>
-              </Link>
-            ))}
-          </div>
+          <ProductsBrowser products={products} />
         </section>
 
         {/* CTA */}

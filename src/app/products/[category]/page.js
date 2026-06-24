@@ -59,7 +59,7 @@ export default async function CategoryPage({ params }) {
             href="/products"
             className="text-xs font-semibold uppercase tracking-[0.3em] text-[#00004d]/60 hover:text-[#00004d]"
           >
-            &larr; All Categories
+            &larr; All Products
           </Link>
 
           <div
@@ -86,7 +86,7 @@ export default async function CategoryPage({ params }) {
                 href="/products"
                 className="mt-4 inline-block text-xs font-semibold uppercase tracking-[0.3em] text-[#00004d] hover:underline"
               >
-                &larr; Back to categories
+                &larr; Back to products
               </Link>
             </div>
           ) : (
