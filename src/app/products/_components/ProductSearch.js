@@ -62,7 +62,7 @@ export default function ProductSearch({ brands, allProducts, playfairClassName }
         </svg>
         <input
           type="text"
-          placeholder="Search products, brands, categories…"
+          placeholder="Search products, brands, categories\u2026"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           className="w-full bg-transparent text-sm text-[#15152e] placeholder-[#00004d]/30 outline-none"
@@ -141,7 +141,7 @@ export default function ProductSearch({ brands, allProducts, playfairClassName }
                   <div key={cat}>
                     <div className="mb-3 flex items-center justify-between">
                       <p className="text-xs font-semibold uppercase tracking-[0.35em] text-[#00004d]/60">
-                        {slugToLabel(cat)} — {products.length} item{products.length !== 1 ? "s" : ""}
+                        {slugToLabel(cat)} \u2014 {products.length} item{products.length !== 1 ? "s" : ""}
                       </p>
                       <Link
                         href={`/products/${cat}`}
