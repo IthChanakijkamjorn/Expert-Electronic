@@ -1,29 +1,24 @@
+import Link from "next/link";
 import SiteHeader from "../_components/site-header";
 import SiteShell from "../_components/site-shell";
 import { playfair } from "../_components/brand-fonts";
 import { client } from "../../lib/sanity";
-import Link from "next/link";
-import ProductSearch from "./_components/ProductSearch";
+import ProductBrandSearch from "./_components/ProductBrandSearch";
 
-async function getAllProductsData() {
-  return client.fetch(
-    `*[_type == "product" && defined(slug.current)] | order(brand asc, name asc) {
-      _id,
-      name,
-      "slug": slug.current,
-      brand,
-      category,
-      shortDescription,
-      "imageUrl": image.asset->url
-    }`
-  );
+async function getBrandsWithCounts() {
+  const products = await client.fetch(`*[_type == "product"] { brand }`);
+  const counts = {};
+  products.forEach((p) => {
+    if (p.brand) {
+      counts[p.brand] = (counts[p.brand] || 0) + 1;
+    }
+  });
+  return counts;
 }
 
 export default async function ProductsPage() {
-  const allProducts = await getAllProductsData();
-
-  // Get unique sorted brands
-  const brands = [...new Set(allProducts.map((p) => p.brand).filter(Boolean))].sort();
+  const counts = await getBrandsWithCounts();
+  const brands = Object.keys(counts).sort();
 
   return (
     <SiteShell>
@@ -45,16 +40,12 @@ export default async function ProductsPage() {
             </h1>
             <p className="max-w-2xl text-lg leading-8 text-[#3d3d5f]">
               We supply gear as part of full design and installation projects.
-              Browse by brand and category below.
+              Browse by brand below.
             </p>
           </div>
 
-          {/* Live search + brand tabs + grouped product grid */}
-          <ProductSearch
-            brands={brands}
-            allProducts={allProducts}
-            playfairClassName={playfair.className}
-          />
+          {/* Live search */}
+          <ProductBrandSearch brands={brands} counts={counts} playfairClassName={playfair.className} />
         </section>
 
         {/* CTA */}
