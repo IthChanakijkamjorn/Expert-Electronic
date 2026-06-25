@@ -119,7 +119,7 @@ export default async function ProductPage({ params }) {
 
               <div>
                 <p className="text-xs font-semibold uppercase tracking-[0.35em] text-[#00004d]/60">
-                  {brand} &mdash; {categoryLabel}
+                  {brand} {categoryLabel}
                 </p>
                 <h1 className={`${playfair.className} mt-2 text-3xl font-semibold text-[#0c0c2a] sm:text-4xl`}>
                   {product.name}

@@ -78,7 +78,7 @@ export default async function BrandCategoryPage({ params }) {
             style={{ animationDelay: "0ms" }}
           >
             <p className="text-xs font-semibold uppercase tracking-[0.4em] text-[#00004d]/70">
-              {brand} &mdash; {label}
+              {brand} {label}
             </p>
             <h1
               className={`${playfair.className} text-4xl font-semibold text-[#0c0c2a] sm:text-5xl`}
