@@ -28,7 +28,7 @@ export default function ProductBrandSearch({ brands, counts, playfairClassName }
         </svg>
         <input
           type="text"
-          placeholder="Search brands\u2026"
+          placeholder="Search brands"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           className="w-full bg-transparent text-sm text-[#15152e] placeholder-[#00004d]/30 outline-none"

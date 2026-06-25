@@ -4,48 +4,51 @@ import SiteShell from "../_components/site-shell";
 import { playfair } from "../_components/brand-fonts";
 import { client } from "../../lib/sanity";
 import ProductBrandSearch from "./_components/ProductBrandSearch";
+import GlobalProductSearch from "./_components/GlobalProductSearch";
 
-async function getBrandsWithCounts() {
-  const products = await client.fetch(`*[_type == "product"] { brand }`);
-  const counts = {};
-  products.forEach((p) => {
-    if (p.brand) {
-      counts[p.brand] = (counts[p.brand] || 0) + 1;
-    }
-  });
-  return counts;
+async function getAllProductsData() {
+  return client.fetch(
+    `*[_type == "product" && defined(slug.current)] | order(brand asc, name asc) {
+      _id,
+      name,
+      "slug": slug.current,
+      brand,
+      category,
+      shortDescription
+    }`
+  );
 }
 
 export default async function ProductsPage() {
-  const counts = await getBrandsWithCounts();
+  const allProducts = await getAllProductsData();
+  const counts = {};
+  allProducts.forEach((p) => {
+    if (p.brand) counts[p.brand] = (counts[p.brand] || 0) + 1;
+  });
   const brands = Object.keys(counts).sort();
 
   return (
     <SiteShell>
       <SiteHeader />
       <main className="relative pt-28">
-        {/* Hero */}
         <section className="mx-auto w-full max-w-6xl px-6 pb-12 pt-10 sm:px-10">
-          <div
-            className="flex flex-col gap-3 animate-fade-up"
-            style={{ animationDelay: "0ms" }}
-          >
-            <p className="text-xs font-semibold uppercase tracking-[0.4em] text-[#00004d]/70">
-              Products
-            </p>
-            <h1
-              className={`${playfair.className} text-4xl font-semibold text-[#0c0c2a] sm:text-5xl`}
-            >
+          <div className="flex flex-col gap-3 animate-fade-up" style={{ animationDelay: "0ms" }}>
+            <p className="text-xs font-semibold uppercase tracking-[0.4em] text-[#00004d]/70">Products</p>
+            <h1 className={`${playfair.className} text-4xl font-semibold text-[#0c0c2a] sm:text-5xl`}>
               Equipment we specify and install.
             </h1>
             <p className="max-w-2xl text-lg leading-8 text-[#3d3d5f]">
-              We supply gear as part of full design and installation projects.
-              Browse by brand below.
+              We supply gear as part of full design and installation projects. Browse by brand below.
             </p>
           </div>
 
-          {/* Live search */}
-          <ProductBrandSearch brands={brands} counts={counts} playfairClassName={playfair.className} />
+          {/* Global search */}
+          <GlobalProductSearch allProducts={allProducts} />
+
+          {/* Brand cards */}
+          <div className="mt-10">
+            <ProductBrandSearch brands={brands} counts={counts} playfairClassName={playfair.className} />
+          </div>
         </section>
 
         {/* CTA */}
@@ -55,12 +58,8 @@ export default async function ProductsPage() {
             style={{ animationDelay: "160ms" }}
           >
             <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.35em] text-[#00004d]/70">
-                Need a custom build
-              </p>
-              <h2
-                className={`${playfair.className} mt-3 text-2xl font-semibold text-[#121233]`}
-              >
+              <p className="text-xs font-semibold uppercase tracking-[0.35em] text-[#00004d]/70">Need a custom build</p>
+              <h2 className={`${playfair.className} mt-3 text-2xl font-semibold text-[#121233]`}>
                 We can tailor a system for your environment.
               </h2>
             </div>

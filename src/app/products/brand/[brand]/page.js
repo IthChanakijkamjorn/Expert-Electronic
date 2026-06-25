@@ -4,6 +4,7 @@ import SiteHeader from "../../../_components/site-header";
 import SiteShell from "../../../_components/site-shell";
 import { playfair } from "../../../_components/brand-fonts";
 import { client } from "../../../../lib/sanity";
+import GlobalProductSearch from "../../_components/GlobalProductSearch";
 
 function slugToLabel(slug) {
   return slug
@@ -18,6 +19,14 @@ export async function generateStaticParams() {
   return brands.map((brand) => ({ brand: encodeURIComponent(brand) }));
 }
 
+async function getAllProducts() {
+  return client.fetch(
+    `*[_type == "product" && defined(slug.current)] | order(brand asc, name asc) {
+      _id, name, "slug": slug.current, brand, category
+    }`
+  );
+}
+
 async function getCategoriesForBrand(brand) {
   const products = await client.fetch(
     `*[_type == "product" && brand == $brand] { category }`,
@@ -25,9 +34,7 @@ async function getCategoriesForBrand(brand) {
   );
   const counts = {};
   products.forEach((p) => {
-    if (p.category) {
-      counts[p.category] = (counts[p.category] || 0) + 1;
-    }
+    if (p.category) counts[p.category] = (counts[p.category] || 0) + 1;
   });
   return counts;
 }
@@ -36,7 +43,10 @@ export default async function BrandPage({ params }) {
   const { brand: rawBrand } = await params;
   const brand = decodeURIComponent(rawBrand);
 
-  const counts = await getCategoriesForBrand(brand);
+  const [counts, allProducts] = await Promise.all([
+    getCategoriesForBrand(brand),
+    getAllProducts(),
+  ]);
   const categories = Object.keys(counts).sort();
 
   if (categories.length === 0) notFound();
@@ -46,7 +56,6 @@ export default async function BrandPage({ params }) {
       <SiteHeader />
       <main className="relative pt-28">
         <section className="mx-auto w-full max-w-6xl px-6 pb-24 pt-10 sm:px-10">
-          {/* Breadcrumb */}
           <Link
             href="/products"
             className="text-xs font-semibold uppercase tracking-[0.3em] text-[#00004d]/60 hover:text-[#00004d]"
@@ -54,22 +63,18 @@ export default async function BrandPage({ params }) {
             &larr; All Brands
           </Link>
 
-          <div
-            className="mt-4 flex flex-col gap-3 animate-fade-up"
-            style={{ animationDelay: "0ms" }}
-          >
-            <p className="text-xs font-semibold uppercase tracking-[0.4em] text-[#00004d]/70">
-              Brand
-            </p>
-            <h1
-              className={`${playfair.className} text-4xl font-semibold text-[#0c0c2a] sm:text-5xl`}
-            >
+          <div className="mt-4 flex flex-col gap-3 animate-fade-up" style={{ animationDelay: "0ms" }}>
+            <p className="text-xs font-semibold uppercase tracking-[0.4em] text-[#00004d]/70">Brand</p>
+            <h1 className={`${playfair.className} text-4xl font-semibold text-[#0c0c2a] sm:text-5xl`}>
               {brand}
             </h1>
             <p className="max-w-2xl text-lg leading-8 text-[#3d3d5f]">
               Browse categories for {brand} products.
             </p>
           </div>
+
+          {/* Global search */}
+          <GlobalProductSearch allProducts={allProducts} />
 
           <div className="mt-10 grid gap-6 sm:grid-cols-2">
             {categories.map((cat, index) => (
@@ -82,14 +87,10 @@ export default async function BrandPage({ params }) {
                 <p className="text-xs font-semibold uppercase tracking-[0.35em] text-[#00004d]/60">
                   {counts[cat]} product{counts[cat] !== 1 ? "s" : ""}
                 </p>
-                <h2
-                  className={`${playfair.className} mt-2 text-2xl font-semibold text-[#121233] group-hover:text-[#00004d]`}
-                >
+                <h2 className={`${playfair.className} mt-2 text-2xl font-semibold text-[#121233] group-hover:text-[#00004d]`}>
                   {slugToLabel(cat)}
                 </h2>
-                <p className="mt-4 text-xs font-semibold uppercase tracking-[0.3em] text-[#00004d]">
-                  View all &rarr;
-                </p>
+                <p className="mt-4 text-xs font-semibold uppercase tracking-[0.3em] text-[#00004d]">View all &rarr;</p>
               </Link>
             ))}
           </div>
