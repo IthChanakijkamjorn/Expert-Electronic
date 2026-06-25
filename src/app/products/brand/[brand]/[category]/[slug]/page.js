@@ -57,8 +57,8 @@ function isFlatSpecs(specifications) {
 }
 
 export default async function ProductPage({ params }) {
-  const brand = decodeURIComponent(params.brand);
-  const { category, slug } = params;
+  const { brand: rawBrand, category, slug } = await params;
+  const brand = decodeURIComponent(rawBrand);
 
   const product = await getProduct(slug);
   if (!product) notFound();

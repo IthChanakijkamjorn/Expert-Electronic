@@ -33,7 +33,8 @@ async function getCategoriesForBrand(brand) {
 }
 
 export default async function BrandPage({ params }) {
-  const brand = decodeURIComponent(params.brand);
+  const { brand: rawBrand } = await params;
+  const brand = decodeURIComponent(rawBrand);
 
   const counts = await getCategoriesForBrand(brand);
   const categories = Object.keys(counts).sort();

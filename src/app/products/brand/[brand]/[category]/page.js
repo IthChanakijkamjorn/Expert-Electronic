@@ -46,8 +46,8 @@ async function getBrandCategoryProducts(brand, category) {
 }
 
 export default async function BrandCategoryPage({ params }) {
-  const brand = decodeURIComponent(params.brand);
-  const { category } = params;
+  const { brand: rawBrand, category } = await params;
+  const brand = decodeURIComponent(rawBrand);
 
   const products = await getBrandCategoryProducts(brand, category);
 
