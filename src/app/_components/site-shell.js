@@ -1,4 +1,5 @@
 import { spaceGrotesk } from "./brand-fonts";
+import SiteFooter from "./site-footer";
 
 export default function SiteShell({ children }) {
   return (
@@ -20,6 +21,7 @@ export default function SiteShell({ children }) {
         />
       </div>
       {children}
+      <SiteFooter />
     </div>
   );
 }
