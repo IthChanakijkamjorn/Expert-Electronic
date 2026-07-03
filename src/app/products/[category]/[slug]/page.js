@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import SiteHeader from "../../../_components/site-header";
 import SiteShell from "../../../_components/site-shell";
-import { playfair } from "../../../_components/brand-fonts";
+import { playfair, inter } from "../../../_components/brand-fonts";
 import { client } from "../../../../lib/sanity";
 import ProductImageLightbox from "../../_components/ProductImageLightbox";
 
@@ -81,14 +81,15 @@ export default async function ProductPage({ params }) {
               )}
             </div>
 
-            {/* Info: title, description, buttons */}
+            {/* Info */}
             <div className="flex flex-col gap-5 animate-fade-up" style={{ animationDelay: "80ms" }}>
               {product.featured && (
                 <span className="inline-block w-fit rounded-full bg-[#00004d] px-3 py-1 text-[10px] font-semibold uppercase tracking-widest text-white">Featured</span>
               )}
               <div>
                 <p className="text-xs font-semibold uppercase tracking-[0.35em] text-[#00004d]/60">{categoryLabel}</p>
-                <h1 className={`${playfair.className} mt-2 text-3xl font-semibold text-[#0c0c2a] sm:text-4xl`}>{product.name}</h1>
+                {/* Use inter for product name — clearer for model numbers */}
+                <h1 className={`${inter.className} mt-2 text-3xl font-bold text-[#0c0c2a] sm:text-4xl tracking-tight`}>{product.name}</h1>
                 {product.brand && <p className="mt-1 text-sm text-[#00004d]/60">{product.brand}</p>}
               </div>
 
@@ -125,7 +126,7 @@ export default async function ProductPage({ params }) {
             </div>
           </div>
 
-          {/* At a Glance — full width, 2-column grid */}
+          {/* At a Glance — full width, 2-column */}
           {product.atAGlance && product.atAGlance.length > 0 && (
             <div className="mt-10 animate-fade-up" style={{ animationDelay: "120ms" }}>
               <div className="rounded-2xl border border-[#00004d]/10 bg-white p-6">
