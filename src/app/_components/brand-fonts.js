@@ -1,6 +1,6 @@
-import { Playfair_Display, Space_Grotesk } from "next/font/google";
+import { Playfair_Display, Inter } from "next/font/google";
 
-export const spaceGrotesk = Space_Grotesk({
+export const inter = Inter({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
 });

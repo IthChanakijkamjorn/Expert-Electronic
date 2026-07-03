@@ -16,14 +16,9 @@ export default function SiteHeader() {
           <span className="flex h-10 w-10 items-center justify-center rounded-full bg-white/15 text-xs font-semibold tracking-[0.35em]">
             EE
           </span>
-          <div className="leading-tight">
-            <p className="text-[10px] uppercase tracking-[0.45em] text-white/70">
-              Expert Electronic
-            </p>
-            <p className={`${playfair.className} text-lg font-semibold`}>
-              Design & Installation
-            </p>
-          </div>
+          <p className={`${playfair.className} text-lg font-semibold`}>
+            Expert Electronic &amp; Communication
+          </p>
         </div>
         <div className="ml-auto flex items-center gap-3">
           <nav
