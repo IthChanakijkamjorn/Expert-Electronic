@@ -1,10 +1,16 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import Image from "next/image";
 
 export default function ProductImageLightbox({ imageUrl, productName }) {
   const [open, setOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     function onKey(e) {
@@ -13,12 +19,91 @@ export default function ProductImageLightbox({ imageUrl, productName }) {
     if (open) {
       document.addEventListener("keydown", onKey);
       document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
     }
     return () => {
       document.removeEventListener("keydown", onKey);
       document.body.style.overflow = "";
     };
   }, [open]);
+
+  const fullResUrl = imageUrl.includes("cdn.sanity.io")
+    ? `${imageUrl}?w=1600&fit=max&auto=format`
+    : imageUrl;
+
+  const lightbox = (
+    <div
+      style={{
+        position: "fixed",
+        inset: 0,
+        zIndex: 9999,
+        backgroundColor: "rgba(0,0,0,0.92)",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: "2rem",
+      }}
+      onClick={() => setOpen(false)}
+    >
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={fullResUrl}
+        alt={productName}
+        style={{
+          maxHeight: "90vh",
+          maxWidth: "90vw",
+          width: "auto",
+          height: "auto",
+          borderRadius: "12px",
+          boxShadow: "0 25px 80px rgba(0,0,0,0.6)",
+        }}
+        onClick={(e) => e.stopPropagation()}
+      />
+
+      {/* Close button */}
+      <button
+        onClick={() => setOpen(false)}
+        style={{
+          position: "absolute",
+          top: "1.25rem",
+          right: "1.25rem",
+          width: "2.5rem",
+          height: "2.5rem",
+          borderRadius: "9999px",
+          backgroundColor: "rgba(255,255,255,0.2)",
+          color: "white",
+          fontSize: "1.125rem",
+          fontWeight: 600,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          border: "none",
+          cursor: "pointer",
+        }}
+        aria-label="Close"
+      >
+        ✕
+      </button>
+
+      <p
+        style={{
+          position: "absolute",
+          bottom: "1rem",
+          left: "50%",
+          transform: "translateX(-50%)",
+          fontSize: "10px",
+          textTransform: "uppercase",
+          letterSpacing: "0.15em",
+          color: "rgba(255,255,255,0.3)",
+          pointerEvents: "none",
+          whiteSpace: "nowrap",
+        }}
+      >
+        Click outside or press Esc to close
+      </p>
+    </div>
+  );
 
   return (
     <>
@@ -40,34 +125,8 @@ export default function ProductImageLightbox({ imageUrl, productName }) {
         </span>
       </button>
 
-      {/* Lightbox — plain img so it sizes naturally */}
-      {open && (
-        <div
-          className="fixed inset-0 z-[200] flex items-center justify-center bg-black/90"
-          onClick={() => setOpen(false)}
-        >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={imageUrl}
-            alt={productName}
-            className="max-h-[90vh] max-w-[90vw] h-auto w-auto object-contain rounded-xl shadow-2xl"
-            onClick={(e) => e.stopPropagation()}
-          />
-
-          {/* Close button */}
-          <button
-            onClick={() => setOpen(false)}
-            className="absolute right-5 top-5 flex h-10 w-10 items-center justify-center rounded-full bg-white/20 text-white text-lg font-semibold transition hover:bg-white/40"
-            aria-label="Close"
-          >
-            ✕
-          </button>
-
-          <p className="absolute bottom-4 left-1/2 -translate-x-1/2 text-[10px] uppercase tracking-widest text-white/30 pointer-events-none">
-            Click outside or press Esc to close
-          </p>
-        </div>
-      )}
+      {/* Portal lightbox — renders directly into document.body */}
+      {mounted && open && createPortal(lightbox, document.body)}
     </>
   );
 }
