@@ -90,14 +90,8 @@ export default function ContactPage() {
                   </p>
                   <p className="font-semibold">02 729 4225-6</p>
                 </div>
-                <div>
-                  <p className="text-xs uppercase tracking-[0.3em] text-[#00004d]/60">
-                    Location
-                  </p>
-                  <p className="font-semibold">Bangkok, Thailand</p>
-                </div>
               </div>
-              <div className="mt-8 rounded-2xl border border-[#00004d]/10 bg-white p-4 text-sm text-[#4b4b6a]">
+              <div className="mt-8 text-sm text-[#4b4b6a]">
                 <p className="font-semibold text-[#00004d]">Office hours</p>
                 <p className="mt-2">Monday – Friday: 08:30 – 17:30</p>
                 <p className="mt-1">Closed on Saturday &amp; Sunday</p>

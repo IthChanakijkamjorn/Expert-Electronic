@@ -1,10 +1,10 @@
 import Link from "next/link";
-import Image from "next/image";
 import { notFound } from "next/navigation";
 import SiteHeader from "../../../_components/site-header";
 import SiteShell from "../../../_components/site-shell";
 import { playfair } from "../../../_components/brand-fonts";
 import { client } from "../../../../lib/sanity";
+import ProductImageLightbox from "../../_components/ProductImageLightbox";
 
 function slugToLabel(slug) {
   return slug
@@ -48,8 +48,6 @@ async function getProduct(slug) {
   );
 }
 
-// Detect if specs are flat rows (Software format: [{label, value}])
-// vs tabbed format ([{tabName, sections:[{rows:[...]}]}])
 function isFlatSpecs(specifications) {
   if (!specifications || specifications.length === 0) return false;
   const first = specifications[0];
@@ -76,10 +74,7 @@ export default async function ProductPage({ params }) {
               Products
             </Link>
             <span>/</span>
-            <Link
-              href={`/products/${category}`}
-              className="hover:text-[#00004d]"
-            >
+            <Link href={`/products/${category}`} className="hover:text-[#00004d]">
               {categoryLabel}
             </Link>
             <span>/</span>
@@ -92,16 +87,9 @@ export default async function ProductPage({ params }) {
             {/* Image */}
             <div className="animate-fade-up" style={{ animationDelay: "0ms" }}>
               {product.imageUrl ? (
-                <div className="relative h-80 w-full overflow-hidden rounded-3xl bg-white shadow-[0_18px_40px_rgba(0,0,77,0.12)]">
-                  <Image
-                    src={product.imageUrl}
-                    alt={product.name}
-                    fill
-                    className="object-contain p-8"
-                  />
-                </div>
+                <ProductImageLightbox imageUrl={product.imageUrl} productName={product.name} />
               ) : (
-                <div className="flex h-80 w-full items-center justify-center rounded-3xl bg-[#00004d]/5">
+                <div className="flex h-96 w-full items-center justify-center rounded-3xl bg-[#00004d]/5">
                   <span className="text-[10px] uppercase tracking-widest text-[#00004d]/30">
                     No image
                   </span>
@@ -157,10 +145,10 @@ export default async function ProductPage({ params }) {
                   <p className="mb-3 text-xs font-semibold uppercase tracking-[0.3em] text-[#00004d]/60">
                     At a Glance
                   </p>
-                  <ul className="flex flex-col gap-2">
+                  <ul className="grid grid-cols-1 gap-2 sm:grid-cols-2">
                     {product.atAGlance.map((point, i) => (
                       <li key={i} className="flex items-start gap-2 text-sm leading-6 text-[#4b4b6a]">
-                        <span className="mt-1 text-[#00004d]">✓</span>
+                        <span className="mt-1 shrink-0 text-[#00004d]">✓</span>
                         {point}
                       </li>
                     ))}
@@ -196,7 +184,6 @@ export default async function ProductPage({ params }) {
                 Specifications
               </h2>
 
-              {/* Flat format (Software type) */}
               {flatSpecs ? (
                 <div className="rounded-2xl border border-[#00004d]/10 bg-white overflow-hidden">
                   <div className="px-6 py-4 bg-[#00004d]/5 border-b border-[#00004d]/10">
@@ -217,7 +204,6 @@ export default async function ProductPage({ params }) {
                   ))}
                 </div>
               ) : (
-                /* Tabbed format (Hardware type) */
                 <div className="flex flex-col gap-4">
                   {product.specifications.map((tab) => (
                     <div key={tab._key} className="rounded-2xl border border-[#00004d]/10 bg-white overflow-hidden">

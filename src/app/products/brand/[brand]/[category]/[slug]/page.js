@@ -1,11 +1,10 @@
 import Link from "next/link";
-import Image from "next/image";
 import { notFound } from "next/navigation";
 import SiteHeader from "../../../../../_components/site-header";
 import SiteShell from "../../../../../_components/site-shell";
 import { playfair } from "../../../../../_components/brand-fonts";
 import { client } from "../../../../../../lib/sanity";
-import GlobalProductSearch from "../../../../_components/GlobalProductSearch";
+import ProductImageLightbox from "../../../../_components/ProductImageLightbox";
 
 function slugToLabel(slug) {
   return slug
@@ -23,14 +22,6 @@ export async function generateStaticParams() {
   return products
     .filter((p) => p.brand && p.category && p.slug)
     .map((p) => ({ brand: encodeURIComponent(p.brand), category: p.category, slug: p.slug }));
-}
-
-async function getAllProducts() {
-  return client.fetch(
-    `*[_type == "product" && defined(slug.current)] | order(brand asc, name asc) {
-      _id, name, "slug": slug.current, brand, category
-    }`
-  );
 }
 
 async function getProduct(slug) {
@@ -56,7 +47,7 @@ export default async function ProductPage({ params }) {
   const { brand: rawBrand, category, slug } = await params;
   const brand = decodeURIComponent(rawBrand);
 
-  const [product, allProducts] = await Promise.all([getProduct(slug), getAllProducts()]);
+  const product = await getProduct(slug);
   if (!product) notFound();
 
   const categoryLabel = slugToLabel(category);
@@ -78,22 +69,19 @@ export default async function ProductPage({ params }) {
             <span className="text-[#00004d] truncate max-w-[160px]">{product.name}</span>
           </nav>
 
-          {/* Global search */}
-          <GlobalProductSearch allProducts={allProducts} />
-
           <div className="mt-10 grid gap-12 lg:grid-cols-[1fr_1.1fr]">
+            {/* Image */}
             <div className="animate-fade-up" style={{ animationDelay: "0ms" }}>
               {product.imageUrl ? (
-                <div className="relative h-80 w-full overflow-hidden rounded-3xl bg-white shadow-[0_18px_40px_rgba(0,0,77,0.12)]">
-                  <Image src={product.imageUrl} alt={product.name} fill className="object-contain p-8" />
-                </div>
+                <ProductImageLightbox imageUrl={product.imageUrl} productName={product.name} />
               ) : (
-                <div className="flex h-80 w-full items-center justify-center rounded-3xl bg-[#00004d]/5">
+                <div className="flex h-96 w-full items-center justify-center rounded-3xl bg-[#00004d]/5">
                   <span className="text-[10px] uppercase tracking-widest text-[#00004d]/30">No image</span>
                 </div>
               )}
             </div>
 
+            {/* Details */}
             <div className="flex flex-col gap-5 animate-fade-up" style={{ animationDelay: "80ms" }}>
               {product.featured && (
                 <span className="inline-block w-fit rounded-full bg-[#00004d] px-3 py-1 text-[10px] font-semibold uppercase tracking-widest text-white">Featured</span>
@@ -112,10 +100,10 @@ export default async function ProductPage({ params }) {
               {product.atAGlance && product.atAGlance.length > 0 && (
                 <div className="rounded-2xl border border-[#00004d]/10 bg-white p-5">
                   <p className="mb-3 text-xs font-semibold uppercase tracking-[0.3em] text-[#00004d]/60">At a Glance</p>
-                  <ul className="flex flex-col gap-2">
+                  <ul className="grid grid-cols-1 gap-2 sm:grid-cols-2">
                     {product.atAGlance.map((point, i) => (
                       <li key={i} className="flex items-start gap-2 text-sm leading-6 text-[#4b4b6a]">
-                        <span className="mt-1 text-[#00004d]">✓</span>{point}
+                        <span className="mt-1 shrink-0 text-[#00004d]">✓</span>{point}
                       </li>
                     ))}
                   </ul>
