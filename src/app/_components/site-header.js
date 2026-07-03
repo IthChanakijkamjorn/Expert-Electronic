@@ -1,5 +1,8 @@
+"use client";
+
 import Link from "next/link";
 import { playfair } from "./brand-fonts";
+import { useState, useEffect, useRef } from "react";
 
 const navItems = [
   { label: "Home", href: "/" },
@@ -9,6 +12,20 @@ const navItems = [
 ];
 
 export default function SiteHeader() {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuRef = useRef(null);
+
+  // Close menu when clicking outside
+  useEffect(() => {
+    function handleClick(e) {
+      if (menuRef.current && !menuRef.current.contains(e.target)) {
+        setMenuOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, []);
+
   return (
     <header className="fixed left-0 right-0 top-0 z-50 bg-[#00004d] text-white shadow-[0_12px_30px_rgba(0,0,0,0.28)] animate-nav-drop">
       <div className="mx-auto flex w-full max-w-6xl items-center px-4 py-4 sm:px-10">
@@ -35,11 +52,25 @@ export default function SiteHeader() {
               </Link>
             ))}
           </nav>
-          <details className="relative md:hidden">
-            <summary className="list-none cursor-pointer rounded-full border border-white/20 px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.35em] text-white/90">
+
+          {/* Mobile menu */}
+          <div className="relative md:hidden" ref={menuRef}>
+            <button
+              onClick={() => setMenuOpen((v) => !v)}
+              className="cursor-pointer rounded-full border border-white/20 px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.35em] text-white/90 transition hover:bg-white/10"
+              aria-expanded={menuOpen}
+              aria-label="Toggle menu"
+            >
               Menu
-            </summary>
-            <div className="absolute right-0 mt-3 w-56 rounded-2xl border border-white/15 bg-[#05054f] p-3 shadow-[0_18px_40px_rgba(0,0,0,0.35)]">
+            </button>
+
+            <div
+              className={`absolute right-0 mt-3 w-56 rounded-2xl border border-white/15 bg-[#05054f] p-3 shadow-[0_18px_40px_rgba(0,0,0,0.35)] transition-all duration-200 origin-top-right ${
+                menuOpen
+                  ? "opacity-100 scale-100 pointer-events-auto"
+                  : "opacity-0 scale-95 pointer-events-none"
+              }`}
+            >
               <nav
                 aria-label="Mobile"
                 className="flex flex-col gap-2 text-xs font-semibold uppercase tracking-[0.3em] text-white/80"
@@ -49,13 +80,14 @@ export default function SiteHeader() {
                     key={item.href}
                     className="rounded-full px-3 py-2 transition hover:bg-white/10 hover:text-white"
                     href={item.href}
+                    onClick={() => setMenuOpen(false)}
                   >
                     {item.label}
                   </Link>
                 ))}
               </nav>
             </div>
-          </details>
+          </div>
         </div>
       </div>
     </header>

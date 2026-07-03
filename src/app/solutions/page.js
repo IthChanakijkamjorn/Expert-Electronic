@@ -37,7 +37,7 @@ export default async function SolutionsPage() {
               Projects delivered across homes, venues, and commercial sites.
             </h1>
             <p className="max-w-2xl text-lg leading-8 text-[#3d3d5f]">
-              We design and install NATV, sound, LED, and CCTV systems tailored to each site.
+              We design and install MATV, sound, LED, and CCTV systems tailored to each site.
             </p>
           </div>
         </section>
