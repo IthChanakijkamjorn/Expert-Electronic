@@ -10,6 +10,12 @@ export default function Home() {
       <main className="relative pt-28">
         <section className="mx-auto flex w-full max-w-6xl flex-col gap-12 px-6 pb-16 pt-10 sm:px-10 lg:flex-row lg:items-center">
           <div className="flex-1">
+            <p
+              className="text-xs font-semibold uppercase tracking-[0.4em] text-[#00004d]/70 animate-fade-up"
+              style={{ animationDelay: "0ms" }}
+            >
+              Design & Installation Studio
+            </p>
             <h1
               className={`${playfair.className} mt-5 text-4xl font-semibold leading-tight text-[#0c0c2a] sm:text-5xl lg:text-6xl animate-fade-up`}
               style={{ animationDelay: "90ms" }}
