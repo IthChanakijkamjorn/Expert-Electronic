@@ -40,26 +40,19 @@ export default function ProductImageLightbox({ imageUrl, productName }) {
         </span>
       </button>
 
-      {/* Lightbox — full screen popup */}
+      {/* Lightbox — plain img so it sizes naturally */}
       {open && (
         <div
-          className="fixed inset-0 z-[200] flex items-center justify-center bg-black/92 p-6"
+          className="fixed inset-0 z-[200] flex items-center justify-center bg-black/90"
           onClick={() => setOpen(false)}
         >
-          {/* Inner box stops click propagation, fills as much space as possible */}
-          <div
-            className="relative flex h-full w-full max-h-[90vh] max-w-[90vw] items-center justify-center"
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={imageUrl}
+            alt={productName}
+            className="max-h-[90vh] max-w-[90vw] h-auto w-auto object-contain rounded-xl shadow-2xl"
             onClick={(e) => e.stopPropagation()}
-          >
-            <Image
-              src={imageUrl}
-              alt={productName}
-              fill
-              className="object-contain"
-              sizes="90vw"
-              priority
-            />
-          </div>
+          />
 
           {/* Close button */}
           <button
@@ -70,7 +63,6 @@ export default function ProductImageLightbox({ imageUrl, productName }) {
             ✕
           </button>
 
-          {/* Hint */}
           <p className="absolute bottom-4 left-1/2 -translate-x-1/2 text-[10px] uppercase tracking-widest text-white/30 pointer-events-none">
             Click outside or press Esc to close
           </p>
