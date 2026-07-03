@@ -10,8 +10,14 @@ export default function ProductImageLightbox({ imageUrl, productName }) {
     function onKey(e) {
       if (e.key === "Escape") setOpen(false);
     }
-    if (open) document.addEventListener("keydown", onKey);
-    return () => document.removeEventListener("keydown", onKey);
+    if (open) {
+      document.addEventListener("keydown", onKey);
+      document.body.style.overflow = "hidden";
+    }
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = "";
+    };
   }, [open]);
 
   return (
@@ -34,31 +40,37 @@ export default function ProductImageLightbox({ imageUrl, productName }) {
         </span>
       </button>
 
-      {/* Lightbox overlay */}
+      {/* Lightbox overlay — truly full screen */}
       {open && (
         <div
-          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm"
+          className="fixed inset-0 z-[200] flex items-center justify-center bg-black/90"
           onClick={() => setOpen(false)}
         >
-          <div
-            className="relative max-h-[90vh] max-w-[90vw] w-full h-full"
-            onClick={(e) => e.stopPropagation()}
-          >
+          {/* Image fills as much of the screen as possible */}
+          <div className="relative h-screen w-screen">
             <Image
               src={imageUrl}
               alt={productName}
               fill
               className="object-contain"
-              sizes="90vw"
+              sizes="100vw"
+              priority
             />
           </div>
+
+          {/* Close button */}
           <button
             onClick={() => setOpen(false)}
-            className="absolute right-5 top-5 flex h-10 w-10 items-center justify-center rounded-full bg-white/20 text-white transition hover:bg-white/40"
+            className="absolute right-5 top-5 flex h-10 w-10 items-center justify-center rounded-full bg-white/20 text-white text-lg transition hover:bg-white/40"
             aria-label="Close"
           >
             ✕
           </button>
+
+          {/* ESC hint */}
+          <p className="absolute bottom-5 left-1/2 -translate-x-1/2 text-[10px] uppercase tracking-widest text-white/40">
+            Click anywhere or press Esc to close
+          </p>
         </div>
       )}
     </>

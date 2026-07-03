@@ -46,7 +46,6 @@ function isFlatSpecs(specifications) {
 export default async function ProductPage({ params }) {
   const { brand: rawBrand, category, slug } = await params;
   const brand = decodeURIComponent(rawBrand);
-
   const product = await getProduct(slug);
   if (!product) notFound();
 
@@ -58,6 +57,7 @@ export default async function ProductPage({ params }) {
       <SiteHeader />
       <main className="relative pt-28">
         <section className="mx-auto w-full max-w-6xl px-6 pb-24 pt-10 sm:px-10">
+
           {/* Breadcrumb */}
           <nav className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.3em] text-[#00004d]/60">
             <Link href="/products" className="hover:text-[#00004d]">Products</Link>
@@ -69,7 +69,9 @@ export default async function ProductPage({ params }) {
             <span className="text-[#00004d] truncate max-w-[160px]">{product.name}</span>
           </nav>
 
+          {/* Top section: Image left, Info right */}
           <div className="mt-10 grid gap-12 lg:grid-cols-[1fr_1.1fr]">
+
             {/* Image */}
             <div className="animate-fade-up" style={{ animationDelay: "0ms" }}>
               {product.imageUrl ? (
@@ -81,7 +83,7 @@ export default async function ProductPage({ params }) {
               )}
             </div>
 
-            {/* Details */}
+            {/* Info: title, description, buttons */}
             <div className="flex flex-col gap-5 animate-fade-up" style={{ animationDelay: "80ms" }}>
               {product.featured && (
                 <span className="inline-block w-fit rounded-full bg-[#00004d] px-3 py-1 text-[10px] font-semibold uppercase tracking-widest text-white">Featured</span>
@@ -90,37 +92,58 @@ export default async function ProductPage({ params }) {
                 <p className="text-xs font-semibold uppercase tracking-[0.35em] text-[#00004d]/60">{brand} {categoryLabel}</p>
                 <h1 className={`${playfair.className} mt-2 text-3xl font-semibold text-[#0c0c2a] sm:text-4xl`}>{product.name}</h1>
               </div>
-              {product.shortDescription && <p className="text-base leading-7 text-[#3d3d5f]">{product.shortDescription}</p>}
+
+              {product.shortDescription && (
+                <p className="text-base leading-7 text-[#3d3d5f]">{product.shortDescription}</p>
+              )}
+
               {product.description && (
                 <div className="rounded-2xl border border-[#00004d]/10 bg-white p-5">
                   <p className="mb-2 text-xs font-semibold uppercase tracking-[0.3em] text-[#00004d]/60">Description</p>
                   <p className="whitespace-pre-line text-sm leading-7 text-[#4b4b6a]">{product.description}</p>
                 </div>
               )}
-              {product.atAGlance && product.atAGlance.length > 0 && (
-                <div className="rounded-2xl border border-[#00004d]/10 bg-white p-5">
-                  <p className="mb-3 text-xs font-semibold uppercase tracking-[0.3em] text-[#00004d]/60">At a Glance</p>
-                  <ul className="grid grid-cols-1 gap-2 sm:grid-cols-2">
-                    {product.atAGlance.map((point, i) => (
-                      <li key={i} className="flex items-start gap-2 text-sm leading-6 text-[#4b4b6a]">
-                        <span className="mt-1 shrink-0 text-[#00004d]">✓</span>{point}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-              {product.datasheetUrl && (
-                <a href={product.datasheetUrl} target="_blank" rel="noopener noreferrer"
-                  className="flex items-center gap-3 rounded-2xl border border-[#00004d]/15 bg-white px-5 py-4 text-sm font-semibold text-[#00004d] transition hover:bg-[#00004d] hover:text-white">
-                  <span>📄</span>Download Datasheet (PDF)
-                </a>
-              )}
-              <Link href="/contact" className="rounded-full bg-[#00004d] px-6 py-3 text-center text-xs font-semibold uppercase tracking-[0.32em] text-white transition hover:bg-[#000066]">
-                Enquire About This Product
-              </Link>
+
+              {/* Datasheet + Enquire */}
+              <div className="mt-auto flex flex-col gap-3">
+                {product.datasheetUrl && (
+                  <a
+                    href={product.datasheetUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-3 rounded-2xl border border-[#00004d]/15 bg-white px-5 py-4 text-sm font-semibold text-[#00004d] transition hover:bg-[#00004d] hover:text-white"
+                  >
+                    <span>📄</span> Download Datasheet (PDF)
+                  </a>
+                )}
+                <Link
+                  href="/contact"
+                  className="rounded-full bg-[#00004d] px-6 py-3 text-center text-xs font-semibold uppercase tracking-[0.32em] text-white transition hover:bg-[#000066]"
+                >
+                  Enquire About This Product
+                </Link>
+              </div>
             </div>
           </div>
 
+          {/* At a Glance — full width, 2-column grid */}
+          {product.atAGlance && product.atAGlance.length > 0 && (
+            <div className="mt-10 animate-fade-up" style={{ animationDelay: "120ms" }}>
+              <div className="rounded-2xl border border-[#00004d]/10 bg-white p-6">
+                <p className="mb-4 text-xs font-semibold uppercase tracking-[0.3em] text-[#00004d]/60">At a Glance</p>
+                <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                  {product.atAGlance.map((point, i) => (
+                    <li key={i} className="flex items-start gap-2 text-sm leading-6 text-[#4b4b6a]">
+                      <span className="mt-1 shrink-0 text-[#00004d]">✓</span>
+                      {point}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          )}
+
+          {/* Specifications */}
           {product.specifications && product.specifications.length > 0 && (
             <div className="mt-16 animate-fade-up" style={{ animationDelay: "160ms" }}>
               <h2 className={`${playfair.className} text-2xl font-semibold text-[#0c0c2a] mb-6`}>Specifications</h2>
