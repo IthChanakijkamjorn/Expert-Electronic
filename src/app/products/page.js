@@ -37,7 +37,7 @@ export default async function ProductsPage() {
             <h1 className={`${playfair.className} text-4xl font-semibold text-[#0c0c2a] sm:text-5xl`}>
               Equipment we specify and install.
             </h1>
-            <p className="max-w-2xl text-lg leading-8 text-[#3d3d5f]">
+            <p className="text-lg leading-8 text-[#3d3d5f]">
               We supply gear as part of full design and installation projects. Browse by brand below.
             </p>
           </div>

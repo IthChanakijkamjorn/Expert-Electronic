@@ -56,9 +56,8 @@ export default function ContactPage() {
             >
               Get in touch with us.
             </h1>
-            <p className="max-w-2xl text-lg leading-8 text-[#3d3d5f]">
-              Whether you have a general question, want to purchase a product, or
-              need a full system design — we are here to help.
+            <p className="text-lg leading-8 text-[#3d3d5f]">
+              Whether you have a general question, want to purchase a product, or need a full system design — we are here to help.
             </p>
           </div>
 
