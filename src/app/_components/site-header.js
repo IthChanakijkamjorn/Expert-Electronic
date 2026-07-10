@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { playfair } from "./brand-fonts";
 import { useState, useEffect, useRef } from "react";
 
@@ -28,15 +29,19 @@ export default function SiteHeader() {
 
   return (
     <header className="fixed left-0 right-0 top-0 z-50 bg-[#00004d] text-white shadow-[0_12px_30px_rgba(0,0,0,0.28)] animate-nav-drop">
-      <div className="mx-auto flex w-full max-w-6xl items-center px-4 py-4 sm:px-10">
-        <div className="flex items-center gap-3">
-          <span className="flex h-10 w-10 items-center justify-center rounded-full bg-white/15 text-xs font-semibold tracking-[0.35em]">
-            EE
-          </span>
+      <div className="mx-auto flex w-full max-w-6xl items-center px-4 py-3 sm:px-10">
+        <Link href="/" className="flex items-center gap-3">
+          <Image
+            src="/logo.png"
+            alt="Expert Electronic logo"
+            width={44}
+            height={44}
+            className="rounded-sm mix-blend-screen"
+          />
           <p className={`${playfair.className} text-lg font-semibold`}>
             Expert Electronic &amp; Communication
           </p>
-        </div>
+        </Link>
         <div className="ml-auto flex items-center gap-3">
           <nav
             aria-label="Primary"
