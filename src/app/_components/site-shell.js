@@ -4,7 +4,7 @@ import SiteFooter from "./site-footer";
 export default function SiteShell({ children }) {
   return (
     <div
-      className={`${inter.className} relative min-h-screen bg-[#f7f3ec] text-[#15152e]`}
+      className={`${inter.className} relative min-h-screen overflow-x-hidden bg-[#f7f3ec] text-[#15152e]`}
     >
       <div aria-hidden="true" className="pointer-events-none absolute inset-0">
         <div
