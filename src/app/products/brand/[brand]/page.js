@@ -6,12 +6,16 @@ import { playfair } from "../../../_components/brand-fonts";
 import { client } from "../../../../lib/sanity";
 import GlobalProductSearch from "../../_components/GlobalProductSearch";
 
-function slugToLabel(slug) {
-  return slug
-    .split("-")
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(" ");
-}
+const MAIN_CATEGORY_LABELS = {
+  'pa-amplifier': 'PA Amplifier',
+  'pa-speaker': 'PA Speaker',
+  'analog-pa-system': 'Analog PA System',
+  'ip-pa-intercom': 'IP/PA Intercom',
+  'audio-conference': 'Audio Conference',
+  'interactive-flat-panel': 'Interactive Flat Panel',
+  'led-stage-lighting': 'LED Stage Lighting',
+  'architecture-lighting': 'Architecture Lighting',
+};
 
 export async function generateStaticParams() {
   const products = await client.fetch(`*[_type == "product" && defined(brand)] { brand }`);
@@ -22,19 +26,19 @@ export async function generateStaticParams() {
 async function getAllProducts() {
   return client.fetch(
     `*[_type == "product" && defined(slug.current)] | order(brand asc, name asc) {
-      _id, name, "slug": slug.current, brand, category
+      _id, name, "slug": slug.current, brand, mainCategory, subCategory
     }`
   );
 }
 
-async function getCategoriesForBrand(brand) {
+async function getMainCategoriesForBrand(brand) {
   const products = await client.fetch(
-    `*[_type == "product" && brand == $brand] { category }`,
+    `*[_type == "product" && brand == $brand] { mainCategory }`,
     { brand }
   );
   const counts = {};
   products.forEach((p) => {
-    if (p.category) counts[p.category] = (counts[p.category] || 0) + 1;
+    if (p.mainCategory) counts[p.mainCategory] = (counts[p.mainCategory] || 0) + 1;
   });
   return counts;
 }
@@ -44,7 +48,7 @@ export default async function BrandPage({ params }) {
   const brand = decodeURIComponent(rawBrand);
 
   const [counts, allProducts] = await Promise.all([
-    getCategoriesForBrand(brand),
+    getMainCategoriesForBrand(brand),
     getAllProducts(),
   ]);
   const categories = Object.keys(counts).sort();
@@ -88,7 +92,7 @@ export default async function BrandPage({ params }) {
                   {counts[cat]} product{counts[cat] !== 1 ? "s" : ""}
                 </p>
                 <h2 className={`${playfair.className} mt-2 text-2xl font-semibold text-[#121233] group-hover:text-[#00004d]`}>
-                  {slugToLabel(cat)}
+                  {MAIN_CATEGORY_LABELS[cat] || cat}
                 </h2>
                 <p className="mt-4 text-xs font-semibold uppercase tracking-[0.3em] text-[#00004d]">View all &rarr;</p>
               </Link>
