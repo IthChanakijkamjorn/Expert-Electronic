@@ -80,12 +80,6 @@ async function getProduct(slug) {
   );
 }
 
-function isFlatSpecs(specifications) {
-  if (!specifications || specifications.length === 0) return false;
-  const first = specifications[0];
-  return typeof first.label === "string" && typeof first.value === "string";
-}
-
 export default async function ProductPage({ params }) {
   const { brand: rawBrand, mainCategory, subCategory, slug } = await params;
   const brand = decodeURIComponent(rawBrand);
@@ -94,7 +88,6 @@ export default async function ProductPage({ params }) {
 
   const mainLabel = MAIN_CATEGORY_LABELS[mainCategory] || mainCategory;
   const subLabel = SUB_CATEGORY_LABELS[subCategory] || subCategory;
-  const flatSpecs = isFlatSpecs(product.specifications);
 
   return (
     <SiteShell>
@@ -193,44 +186,23 @@ export default async function ProductPage({ params }) {
           {product.specifications && product.specifications.length > 0 && (
             <div className="mt-16 animate-fade-up" style={{ animationDelay: "160ms" }}>
               <h2 className={`${playfair.className} text-2xl font-semibold text-[#0c0c2a] mb-6`}>Specifications</h2>
-              {flatSpecs ? (
-                <div className="rounded-2xl border border-[#00004d]/10 bg-white overflow-hidden">
-                  <div className="px-6 py-4 bg-[#00004d]/5 border-b border-[#00004d]/10">
-                    <p className="text-xs font-semibold uppercase tracking-[0.3em] text-[#00004d]">Technical Data</p>
-                  </div>
-                  {product.specifications.map((row, i) => (
-                    <div key={row._key || i} className={`flex px-6 py-3 text-sm border-b border-[#00004d]/5 last:border-0 ${i % 2 === 0 ? "bg-white" : "bg-[#00004d]/[0.02]"}`}>
-                      <span className="w-1/2 font-medium text-[#15152e]">{row.label}</span>
-                      <span className="w-1/2 text-[#4b4b6a]">{row.value}</span>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="flex flex-col gap-4">
-                  {product.specifications.map((tab) => (
-                    <div key={tab._key} className="rounded-2xl border border-[#00004d]/10 bg-white overflow-hidden">
+              <div className="flex flex-col gap-4">
+                {product.specifications.map((tab) => (
+                  <div key={tab._key} className="rounded-2xl border border-[#00004d]/10 bg-white overflow-hidden">
+                    {tab.tabName && (
                       <div className="px-6 py-4 bg-[#00004d]/5 border-b border-[#00004d]/10">
                         <p className="text-xs font-semibold uppercase tracking-[0.3em] text-[#00004d]">{tab.tabName}</p>
                       </div>
-                      {tab.sections && tab.sections.map((section) => (
-                        <div key={section._key}>
-                          {section.sectionName && (
-                            <div className="px-6 py-3 bg-[#00004d]/[0.02] border-b border-[#00004d]/5">
-                              <p className="text-xs font-semibold text-[#00004d]/70 uppercase tracking-widest">{section.sectionName}</p>
-                            </div>
-                          )}
-                          {section.rows && section.rows.map((row, i) => (
-                            <div key={row._key} className={`flex px-6 py-3 text-sm border-b border-[#00004d]/5 last:border-0 ${i % 2 === 0 ? "bg-white" : "bg-[#00004d]/[0.02]"}`}>
-                              <span className="w-1/2 font-medium text-[#15152e]">{row.label}</span>
-                              <span className="w-1/2 text-[#4b4b6a]">{row.value}</span>
-                            </div>
-                          ))}
-                        </div>
-                      ))}
-                    </div>
-                  ))}
-                </div>
-              )}
+                    )}
+                    {tab.rows && tab.rows.map((row, i) => (
+                      <div key={row._key || i} className={`flex px-6 py-3 text-sm border-b border-[#00004d]/5 last:border-0 ${i % 2 === 0 ? "bg-white" : "bg-[#00004d]/[0.02]"}`}>
+                        <span className="w-1/2 font-medium text-[#15152e]">{row.label}</span>
+                        <span className="w-1/2 text-[#4b4b6a]">{row.value}</span>
+                      </div>
+                    ))}
+                  </div>
+                ))}
+              </div>
             </div>
           )}
         </section>
