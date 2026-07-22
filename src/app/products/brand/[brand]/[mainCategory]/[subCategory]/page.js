@@ -6,51 +6,7 @@ import SiteShell from "../../../../../_components/site-shell";
 import { playfair } from "../../../../../_components/brand-fonts";
 import { client } from "../../../../../../lib/sanity";
 import GlobalProductSearch from "../../../../_components/GlobalProductSearch";
-
-const MAIN_CATEGORY_LABELS = {
-  'pa-amplifier': 'PA Amplifier',
-  'pa-speaker': 'PA Speaker',
-  'analog-pa-system': 'Analog PA System',
-  'ip-pa-intercom': 'IP/PA Intercom',
-  'audio-conference': 'Audio Conference',
-  'interactive-flat-panel': 'Interactive Flat Panel',
-  'led-stage-lighting': 'LED Stage Lighting',
-  'architecture-lighting': 'Architecture Lighting',
-};
-
-const SUB_CATEGORY_LABELS = {
-  'mixer-amplifier': 'Mixer Amplifier',
-  'zone-mixer-amplifier': 'Zone Mixer Amplifier',
-  'class-d-power-amplifier': 'Class-D Power Amplifier',
-  'pre-amplifier': 'Pre-Amplifier',
-  'ceiling-speaker': 'Ceiling Speaker',
-  'wall-mounted-speaker': 'Wall Mounted Speaker',
-  'active-speaker': 'Active Speaker',
-  'horn-speaker': 'Horn Speaker',
-  'projection-speaker': 'Projection Speaker',
-  'pendant-speaker': 'Pendant Speaker',
-  'garden-speaker': 'Garden Speaker',
-  'column-speaker': 'Column Speaker',
-  'controller': 'Controller',
-  'audio-sources': 'Audio Sources',
-  'microphone': 'Microphone',
-  'volume-controller': 'Volume Controller',
-  'lectern': 'Lectern',
-  'others': 'Others',
-  '88-series': '88 Series',
-  '77-series': '77 Series',
-  '69-series': '69 Series',
-  'digital-conference': 'Digital Conference',
-  'itchub': 'itcHUB',
-  '810-series': '810 Series',
-  '820-series': '820 Series',
-  '830e-series': '830E Series',
-  'par-light': 'Par Light',
-  'effect-light': 'Effect Light',
-  'moving-head-light': 'Moving Head Light',
-  'console': 'Console',
-  'flood-light': 'Flood Light',
-};
+import { slugToLabel } from "../../../../../../lib/slugToLabel";
 
 export async function generateStaticParams() {
   const products = await client.fetch(
@@ -95,8 +51,8 @@ export default async function SubCategoryPage({ params }) {
 
   if (!products || products.length === 0) notFound();
 
-  const mainLabel = MAIN_CATEGORY_LABELS[mainCategory] || mainCategory;
-  const subLabel = SUB_CATEGORY_LABELS[subCategory] || subCategory;
+  const mainLabel = slugToLabel(mainCategory);
+  const subLabel = slugToLabel(subCategory);
 
   return (
     <SiteShell>
@@ -123,7 +79,6 @@ export default async function SubCategoryPage({ params }) {
             </p>
           </div>
 
-          {/* Global search */}
           <GlobalProductSearch allProducts={allProducts} />
 
           <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
