@@ -5,17 +5,7 @@ import SiteShell from "../../../_components/site-shell";
 import { playfair } from "../../../_components/brand-fonts";
 import { client } from "../../../../lib/sanity";
 import GlobalProductSearch from "../../_components/GlobalProductSearch";
-
-const MAIN_CATEGORY_LABELS = {
-  'pa-amplifier': 'PA Amplifier',
-  'pa-speaker': 'PA Speaker',
-  'analog-pa-system': 'Analog PA System',
-  'ip-pa-intercom': 'IP/PA Intercom',
-  'audio-conference': 'Audio Conference',
-  'interactive-flat-panel': 'Interactive Flat Panel',
-  'led-stage-lighting': 'LED Stage Lighting',
-  'architecture-lighting': 'Architecture Lighting',
-};
+import { slugToLabel } from "../../../../lib/slugToLabel";
 
 export async function generateStaticParams() {
   const products = await client.fetch(`*[_type == "product" && defined(brand)] { brand }`);
@@ -77,7 +67,6 @@ export default async function BrandPage({ params }) {
             </p>
           </div>
 
-          {/* Global search */}
           <GlobalProductSearch allProducts={allProducts} />
 
           <div className="mt-10 grid gap-6 sm:grid-cols-2">
@@ -92,7 +81,7 @@ export default async function BrandPage({ params }) {
                   {counts[cat]} product{counts[cat] !== 1 ? "s" : ""}
                 </p>
                 <h2 className={`${playfair.className} mt-2 text-2xl font-semibold text-[#121233] group-hover:text-[#00004d]`}>
-                  {MAIN_CATEGORY_LABELS[cat] || cat}
+                  {slugToLabel(cat)}
                 </h2>
                 <p className="mt-4 text-xs font-semibold uppercase tracking-[0.3em] text-[#00004d]">View all &rarr;</p>
               </Link>
