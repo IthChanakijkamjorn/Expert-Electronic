@@ -5,51 +5,7 @@ import SiteShell from "../../../../../../_components/site-shell";
 import { playfair, inter } from "../../../../../../_components/brand-fonts";
 import { client } from "../../../../../../../lib/sanity";
 import ProductImageLightbox from "../../../../../_components/ProductImageLightbox";
-
-const MAIN_CATEGORY_LABELS = {
-  'pa-amplifier': 'PA Amplifier',
-  'pa-speaker': 'PA Speaker',
-  'analog-pa-system': 'Analog PA System',
-  'ip-pa-intercom': 'IP/PA Intercom',
-  'audio-conference': 'Audio Conference',
-  'interactive-flat-panel': 'Interactive Flat Panel',
-  'led-stage-lighting': 'LED Stage Lighting',
-  'architecture-lighting': 'Architecture Lighting',
-};
-
-const SUB_CATEGORY_LABELS = {
-  'mixer-amplifier': 'Mixer Amplifier',
-  'zone-mixer-amplifier': 'Zone Mixer Amplifier',
-  'class-d-power-amplifier': 'Class-D Power Amplifier',
-  'pre-amplifier': 'Pre-Amplifier',
-  'ceiling-speaker': 'Ceiling Speaker',
-  'wall-mounted-speaker': 'Wall Mounted Speaker',
-  'active-speaker': 'Active Speaker',
-  'horn-speaker': 'Horn Speaker',
-  'projection-speaker': 'Projection Speaker',
-  'pendant-speaker': 'Pendant Speaker',
-  'garden-speaker': 'Garden Speaker',
-  'column-speaker': 'Column Speaker',
-  'controller': 'Controller',
-  'audio-sources': 'Audio Sources',
-  'microphone': 'Microphone',
-  'volume-controller': 'Volume Controller',
-  'lectern': 'Lectern',
-  'others': 'Others',
-  '88-series': '88 Series',
-  '77-series': '77 Series',
-  '69-series': '69 Series',
-  'digital-conference': 'Digital Conference',
-  'itchub': 'itcHUB',
-  '810-series': '810 Series',
-  '820-series': '820 Series',
-  '830e-series': '830E Series',
-  'par-light': 'Par Light',
-  'effect-light': 'Effect Light',
-  'moving-head-light': 'Moving Head Light',
-  'console': 'Console',
-  'flood-light': 'Flood Light',
-};
+import { slugToLabel } from "../../../../../../../lib/slugToLabel";
 
 export async function generateStaticParams() {
   const products = await client.fetch(
@@ -86,8 +42,8 @@ export default async function ProductPage({ params }) {
   const product = await getProduct(slug);
   if (!product) notFound();
 
-  const mainLabel = MAIN_CATEGORY_LABELS[mainCategory] || mainCategory;
-  const subLabel = SUB_CATEGORY_LABELS[subCategory] || subCategory;
+  const mainLabel = slugToLabel(mainCategory);
+  const subLabel = slugToLabel(subCategory);
 
   return (
     <SiteShell>
@@ -95,7 +51,6 @@ export default async function ProductPage({ params }) {
       <main className="relative pt-28">
         <section className="mx-auto w-full max-w-6xl px-6 pb-24 pt-10 sm:px-10">
 
-          {/* Breadcrumb */}
           <nav className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.3em] text-[#00004d]/60">
             <Link href="/products" className="hover:text-[#00004d]">Products</Link>
             <span>/</span>
@@ -108,10 +63,7 @@ export default async function ProductPage({ params }) {
             <span className="text-[#00004d] truncate max-w-[160px]">{product.name}</span>
           </nav>
 
-          {/* Top section: Image left, Info right */}
           <div className="mt-10 grid gap-12 lg:grid-cols-[1fr_1.1fr]">
-
-            {/* Image */}
             <div className="animate-fade-up" style={{ animationDelay: "0ms" }}>
               {product.imageUrl ? (
                 <ProductImageLightbox imageUrl={product.imageUrl} productName={product.name} />
@@ -122,7 +74,6 @@ export default async function ProductPage({ params }) {
               )}
             </div>
 
-            {/* Info */}
             <div className="flex flex-col gap-5 animate-fade-up" style={{ animationDelay: "80ms" }}>
               {product.featured && (
                 <span className="inline-block w-fit rounded-full bg-[#00004d] px-3 py-1 text-[10px] font-semibold uppercase tracking-widest text-white">Featured</span>
@@ -143,7 +94,6 @@ export default async function ProductPage({ params }) {
                 </div>
               )}
 
-              {/* Datasheet + Enquire */}
               <div className="mt-auto flex flex-col gap-3">
                 {product.datasheetUrl && (
                   <a
@@ -165,7 +115,6 @@ export default async function ProductPage({ params }) {
             </div>
           </div>
 
-          {/* At a Glance */}
           {product.atAGlance && product.atAGlance.length > 0 && (
             <div className="mt-10 animate-fade-up" style={{ animationDelay: "120ms" }}>
               <div className="rounded-2xl border border-[#00004d]/10 bg-white p-6">
@@ -182,7 +131,6 @@ export default async function ProductPage({ params }) {
             </div>
           )}
 
-          {/* Specifications */}
           {product.specifications && product.specifications.length > 0 && (
             <div className="mt-16 animate-fade-up" style={{ animationDelay: "160ms" }}>
               <h2 className={`${playfair.className} text-2xl font-semibold text-[#0c0c2a] mb-6`}>Specifications</h2>

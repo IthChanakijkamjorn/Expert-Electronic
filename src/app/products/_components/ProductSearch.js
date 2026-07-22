@@ -3,13 +3,7 @@
 import { useState, useMemo } from "react";
 import Link from "next/link";
 import Image from "next/image";
-
-function slugToLabel(slug) {
-  return slug
-    .split("-")
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(" ");
-}
+import { slugToLabel } from "../../../lib/slugToLabel";
 
 export default function ProductSearch({ brands, allProducts, playfairClassName }) {
   const [query, setQuery] = useState("");
@@ -30,7 +24,6 @@ export default function ProductSearch({ brands, allProducts, playfairClassName }
     });
   }, [query, activeBrand, allProducts]);
 
-  // Group filtered products by brand → category
   const grouped = useMemo(() => {
     const map = {};
     filtered.forEach((p) => {
@@ -48,7 +41,6 @@ export default function ProductSearch({ brands, allProducts, playfairClassName }
 
   return (
     <>
-      {/* Search Bar */}
       <div className="mt-8 flex items-center gap-3 rounded-2xl border border-white/70 bg-white/80 px-5 py-3 shadow-[0_8px_24px_rgba(0,0,77,0.10)]">
         <svg
           className="h-4 w-4 shrink-0 text-[#00004d]/40"
@@ -77,7 +69,6 @@ export default function ProductSearch({ brands, allProducts, playfairClassName }
         )}
       </div>
 
-      {/* Brand Filter Tabs */}
       {!isSearching && (
         <div className="mt-6 flex flex-wrap gap-2">
           {brandList.map((brand) => (
@@ -96,7 +87,6 @@ export default function ProductSearch({ brands, allProducts, playfairClassName }
         </div>
       )}
 
-      {/* Results */}
       {filtered.length === 0 ? (
         <div className="mt-10 rounded-3xl border border-white/70 bg-white/70 p-10 text-center">
           <p className="text-[#4b4b6a]">No products found for &ldquo;{query}&rdquo;.</p>
@@ -108,7 +98,6 @@ export default function ProductSearch({ brands, allProducts, playfairClassName }
           </button>
         </div>
       ) : isSearching ? (
-        /* Flat list when searching */
         <div>
           <p className="mt-6 text-xs text-[#00004d]/50">
             {filtered.length} result{filtered.length !== 1 ? "s" : ""} for &ldquo;{query}&rdquo;
@@ -120,11 +109,9 @@ export default function ProductSearch({ brands, allProducts, playfairClassName }
           </div>
         </div>
       ) : (
-        /* Brand → Category grouped view */
         <div className="mt-10 space-y-14">
           {Object.entries(grouped).map(([brand, categories]) => (
             <div key={brand}>
-              {/* Brand heading */}
               <div className="mb-6 flex items-center gap-4">
                 <h2 className={`${playfairClassName} text-2xl font-semibold text-[#0c0c2a]`}>
                   {brand}
@@ -135,7 +122,6 @@ export default function ProductSearch({ brands, allProducts, playfairClassName }
                 </span>
               </div>
 
-              {/* Categories under brand */}
               <div className="space-y-8">
                 {Object.entries(categories).map(([cat, products]) => (
                   <div key={cat}>
