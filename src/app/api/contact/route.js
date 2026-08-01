@@ -16,8 +16,8 @@ export async function POST(request) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        from: 'Expert Electronic <auth@expertelectronic.co.th>',
-        to: 'admin@expertelectronic.co.th',
+        from: 'Expert Electronic <onboarding@resend.dev>',
+        to: ['admin@expertelectronic.co.th', 'auth@expertelectronic.co.th'],
         reply_to: email,
         subject: `New enquiry from ${fullName}`,
         html: `
