@@ -14,7 +14,7 @@ export default function Home() {
               className={`${playfair.className} text-4xl font-semibold leading-tight text-[#0c0c2a] sm:text-5xl lg:text-6xl animate-fade-up`}
               style={{ animationDelay: "0ms" }}
             >
-              Plan, design, and install MATV, sound, LED, and CCTV systems.
+              Professional electronic systems, from survey to handover
             </h1>
             <p
               className="mt-5 max-w-xl text-lg leading-8 text-[#3d3d5f] animate-fade-up"

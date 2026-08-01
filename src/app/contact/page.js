@@ -83,7 +83,6 @@ export default function ContactPage() {
   async function handleSubmit(e) {
     e.preventDefault();
 
-    // Client-side rate limit: once per 60 seconds
     const now = Date.now();
     if (now - lastSubmitRef.current < 60000) {
       alert("Please wait a moment before sending another message.");
@@ -94,7 +93,6 @@ export default function ContactPage() {
     setStatus("loading");
 
     try {
-      // Get reCAPTCHA token
       const token = await new Promise((resolve, reject) => {
         window.grecaptcha.ready(async () => {
           try {
@@ -156,7 +154,7 @@ export default function ContactPage() {
             <h1
               className={`${playfair.className} text-4xl font-semibold text-[#0c0c2a] sm:text-5xl`}
             >
-              Get in touch with us.
+              Get in touch with us
             </h1>
             <p className="text-lg leading-8 text-[#3d3d5f]">
               Whether you have a general question, want to purchase a product, or need a full system design — we are here to help.

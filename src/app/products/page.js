@@ -35,7 +35,7 @@ export default async function ProductsPage() {
           <div className="flex flex-col gap-3 animate-fade-up" style={{ animationDelay: "0ms" }}>
             <p className="text-xs font-semibold uppercase tracking-[0.4em] text-[#00004d]/70">Products</p>
             <h1 className={`${playfair.className} text-4xl font-semibold text-[#0c0c2a] sm:text-5xl`}>
-              Equipment we specify and install.
+              Equipment we specify and install
             </h1>
             <p className="text-lg leading-8 text-[#3d3d5f]">
               We supply gear as part of full design and installation projects. Browse by brand below.

@@ -34,7 +34,7 @@ export default async function SolutionsPage() {
               Solutions
             </p>
             <h1 className={`${playfair.className} text-4xl font-semibold text-[#0c0c2a] sm:text-5xl`}>
-              Our projects.
+              Our projects
             </h1>
             <p className="text-lg leading-8 text-[#3d3d5f]">
               A showcase of systems we have designed and installed across a range of sites and environments.
