@@ -22,7 +22,7 @@ export async function POST(request) {
     }
     rateLimitMap.set(ip, now);
 
-    // Clean up old entries every 100 requests
+    // Clean up old entries
     if (rateLimitMap.size > 100) {
       for (const [key, time] of rateLimitMap.entries()) {
         if (now - time > 60000) rateLimitMap.delete(key);
@@ -30,13 +30,29 @@ export async function POST(request) {
     }
 
     const body = await request.json();
-    const { fullName, email, company, topic, message } = body;
+    const { fullName, email, company, topic, message, recaptchaToken } = body;
 
     if (!fullName || !email || !message) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
-    // Basic honeypot / bot check: message should not contain http links
+    // Verify reCAPTCHA token
+    if (!recaptchaToken) {
+      return NextResponse.json({ error: 'Missing reCAPTCHA token.' }, { status: 400 });
+    }
+
+    const recaptchaRes = await fetch(
+      `https://www.google.com/recaptcha/api/siteverify?secret=${process.env.RECAPTCHA_SECRET_KEY}&response=${recaptchaToken}`,
+      { method: 'POST' }
+    );
+    const recaptchaData = await recaptchaRes.json();
+
+    // Block if score is too low (0.0 = bot, 1.0 = human). 0.5 is a safe threshold.
+    if (!recaptchaData.success || recaptchaData.score < 0.5) {
+      return NextResponse.json({ error: 'Failed reCAPTCHA verification.' }, { status: 403 });
+    }
+
+    // Basic honeypot / bot check
     const urlPattern = /https?:\/\//i;
     if (urlPattern.test(message) && urlPattern.test(fullName)) {
       return NextResponse.json({ error: 'Invalid submission.' }, { status: 400 });

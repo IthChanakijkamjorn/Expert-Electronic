@@ -17,13 +17,10 @@ function Toast({ type, onClose }) {
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
       <div
         className={`mx-4 w-full max-w-md rounded-3xl p-8 shadow-[0_30px_80px_rgba(0,0,0,0.35)] animate-fade-up ${
-          isSuccess
-            ? "bg-[#0f102c] text-white"
-            : "bg-red-600 text-white"
+          isSuccess ? "bg-[#0f102c] text-white" : "bg-red-600 text-white"
         }`}
       >
         <div className="flex flex-col items-center gap-5 text-center">
-          {/* Icon */}
           <div
             className={`flex h-16 w-16 items-center justify-center rounded-full ${
               isSuccess ? "bg-white/15" : "bg-white/20"
@@ -39,8 +36,6 @@ function Toast({ type, onClose }) {
               </svg>
             )}
           </div>
-
-          {/* Text */}
           <div>
             <p className="text-xl font-semibold">
               {isSuccess ? "Message sent!" : "Something went wrong"}
@@ -51,8 +46,6 @@ function Toast({ type, onClose }) {
                 : "Please try again or contact us directly by phone."}
             </p>
           </div>
-
-          {/* Close button */}
           <button
             onClick={onClose}
             className="rounded-full border border-white/30 px-6 py-2.5 text-xs font-semibold uppercase tracking-[0.3em] text-white transition hover:bg-white/10"
@@ -65,9 +58,23 @@ function Toast({ type, onClose }) {
   );
 }
 
+// Load reCAPTCHA v3 script
+function useRecaptcha() {
+  useEffect(() => {
+    const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
+    if (!siteKey || document.getElementById("recaptcha-script")) return;
+    const script = document.createElement("script");
+    script.id = "recaptcha-script";
+    script.src = `https://www.google.com/recaptcha/api.js?render=${siteKey}`;
+    script.async = true;
+    document.head.appendChild(script);
+  }, []);
+}
+
 export default function ContactPage() {
   const [status, setStatus] = useState("idle");
   const lastSubmitRef = useRef(0);
+  useRecaptcha();
 
   function handleClose() {
     setStatus("idle");
@@ -76,7 +83,7 @@ export default function ContactPage() {
   async function handleSubmit(e) {
     e.preventDefault();
 
-    // Rate limit: prevent submission more than once every 60 seconds
+    // Client-side rate limit: once per 60 seconds
     const now = Date.now();
     if (now - lastSubmitRef.current < 60000) {
       alert("Please wait a moment before sending another message.");
@@ -86,16 +93,32 @@ export default function ContactPage() {
 
     setStatus("loading");
 
-    const formData = new FormData(e.target);
-    const data = {
-      fullName: formData.get("fullName"),
-      email: formData.get("email"),
-      company: formData.get("company"),
-      topic: formData.get("topic"),
-      message: formData.get("message"),
-    };
-
     try {
+      // Get reCAPTCHA token
+      const token = await new Promise((resolve, reject) => {
+        window.grecaptcha.ready(async () => {
+          try {
+            const t = await window.grecaptcha.execute(
+              process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY,
+              { action: "contact_form" }
+            );
+            resolve(t);
+          } catch (err) {
+            reject(err);
+          }
+        });
+      });
+
+      const formData = new FormData(e.target);
+      const data = {
+        fullName: formData.get("fullName"),
+        email: formData.get("email"),
+        company: formData.get("company"),
+        topic: formData.get("topic"),
+        message: formData.get("message"),
+        recaptchaToken: token,
+      };
+
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -117,13 +140,11 @@ export default function ContactPage() {
     <SiteShell>
       <SiteHeader />
 
-      {/* Toast popup */}
       {(status === "success" || status === "error") && (
         <Toast type={status} onClose={handleClose} />
       )}
 
       <main className="relative pt-28">
-        {/* Contact info + form */}
         <section className="mx-auto w-full max-w-6xl px-6 pb-16 pt-10 sm:px-10">
           <div
             className="flex flex-col gap-3 animate-fade-up"
@@ -148,27 +169,19 @@ export default function ContactPage() {
               className="rounded-3xl border border-white/70 bg-white/70 p-6 shadow-[0_18px_40px_rgba(0,0,77,0.12)] animate-fade-up"
               style={{ animationDelay: "120ms" }}
             >
-              <h2
-                className={`${playfair.className} text-2xl font-semibold text-[#121233]`}
-              >
+              <h2 className={`${playfair.className} text-2xl font-semibold text-[#121233]`}>
                 Direct line
               </h2>
               <p className="mt-3 text-sm leading-6 text-[#4b4b6a]">
-                We design and install MATV, sound systems, LED displays, and
-                CCTV. Share the basics and we will match you with the right
-                specialist.
+                We design and install MATV, sound systems, LED displays, and CCTV. Share the basics and we will match you with the right specialist.
               </p>
               <div className="mt-6 space-y-4 text-sm text-[#2f2f4b]">
                 <div>
-                  <p className="text-xs uppercase tracking-[0.3em] text-[#00004d]/60">
-                    Email
-                  </p>
+                  <p className="text-xs uppercase tracking-[0.3em] text-[#00004d]/60">Email</p>
                   <p className="font-semibold">admin@expertelectronic.co.th</p>
                 </div>
                 <div>
-                  <p className="text-xs uppercase tracking-[0.3em] text-[#00004d]/60">
-                    Phone
-                  </p>
+                  <p className="text-xs uppercase tracking-[0.3em] text-[#00004d]/60">Phone</p>
                   <p className="font-semibold">02 729 4225-6</p>
                 </div>
               </div>
@@ -252,6 +265,13 @@ export default function ContactPage() {
               >
                 {status === "loading" ? "Sending..." : "Send Message"}
               </button>
+
+              {/* reCAPTCHA badge notice (required by Google) */}
+              <p className="mt-4 text-center text-[10px] text-[#00004d]/40">
+                Protected by reCAPTCHA &mdash;{" "}
+                <a href="https://policies.google.com/privacy" target="_blank" rel="noreferrer" className="underline">Privacy</a>{" "}&amp;{" "}
+                <a href="https://policies.google.com/terms" target="_blank" rel="noreferrer" className="underline">Terms</a>
+              </p>
             </form>
           </div>
         </section>
