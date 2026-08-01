@@ -279,7 +279,7 @@ export default function ContactPage() {
         {/* Full-width map strip above footer */}
         <div className="w-full animate-fade-up" style={{ animationDelay: "300ms" }}>
           <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d242.19314014984238!2d100.66879092173525!3d13.773431235696176!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x311d617e3d712dc1%3A0x6ba8fa786858ff4b!2z4Lia4Lij4Li04Lip4Lix4LiXIOC5gOC4reC5h-C4geC4i-C5jOC5gOC4nuC4tOC4o-C5jOC4lyDguK3guLTguYDguKXguYfguITguYLguJfguKPguJnguLTguIQg4LmB4Lit4LiZ4LiU4LmMIOC4hOC4reC4oeC4oeC4ueC4meC4tOC5gOC4hOC4iuC4seC5iOC4mSDguIjguLPguIHguLHguJQ!5e0!3m2!1sth!2sth!4v1785571092173!5m2!1sth!2sth"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3873.8!2d100.66879092173525!3d13.773431235696176!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x311d617e3d712dc1%3A0x6ba8fa786858ff4b!2z4Lia4Lij4Li04Lip4Lix4LiXIOC5gOC4reC5h-C4geC4i-C5jOC5gOC4nuC4tOC4o-C5jOC4lyDguK3guLTguYDguKXguYfguITguYLguJfguKPguJnguLTguIQg4LmB4Lit4LiZ4LiU4LmMIOC4hOC4reC4oeC4oeC4ueC4meC4tOC5gOC4hOC4iuC4seC5iOC4mSDguIjguLPguIHguLHguJQ!5e0!3m2!1sth!2sth!4v1785571092173!5m2!1sth!2sth"
             width="100%"
             height="560"
             style={{ border: 0, display: "block" }}
