@@ -11,8 +11,8 @@ export default function SiteFooter() {
             <p className="text-xs font-semibold uppercase tracking-[0.35em] text-[#00004d]/50">
               Company
             </p>
-            <p className="text-base font-semibold text-[#0c0c2a]">
-              Expert Electronic &amp; Communication Co., LTD.
+            <p className="text-sm font-semibold text-[#0c0c2a]">
+              Expert Electronic &amp; Communication Co., Ltd.
             </p>
             <p className="text-sm leading-6 text-[#4b4b6a]">
               51/2 Soi Ramkhamhaeng 96,<br />
