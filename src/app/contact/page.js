@@ -1,40 +1,40 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import SiteHeader from "../_components/site-header";
 import SiteShell from "../_components/site-shell";
 import { playfair } from "../_components/brand-fonts";
 
 function Toast({ type, onClose }) {
   useEffect(() => {
-    const timer = setTimeout(onClose, 3000);
+    const timer = setTimeout(onClose, 5000);
     return () => clearTimeout(timer);
   }, [onClose]);
 
   const isSuccess = type === "success";
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center pointer-events-none">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
       <div
-        className={`pointer-events-auto mx-4 w-full max-w-sm rounded-3xl border p-6 shadow-[0_25px_60px_rgba(0,0,0,0.18)] animate-fade-up ${
+        className={`mx-4 w-full max-w-md rounded-3xl p-8 shadow-[0_30px_80px_rgba(0,0,0,0.35)] animate-fade-up ${
           isSuccess
-            ? "border-green-200 bg-white"
-            : "border-red-100 bg-white"
+            ? "bg-[#0f102c] text-white"
+            : "bg-red-600 text-white"
         }`}
       >
-        <div className="flex flex-col items-center gap-4 text-center">
+        <div className="flex flex-col items-center gap-5 text-center">
           {/* Icon */}
           <div
-            className={`flex h-14 w-14 items-center justify-center rounded-full ${
-              isSuccess ? "bg-green-50" : "bg-red-50"
+            className={`flex h-16 w-16 items-center justify-center rounded-full ${
+              isSuccess ? "bg-white/15" : "bg-white/20"
             }`}
           >
             {isSuccess ? (
-              <svg className="h-7 w-7 text-green-600" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+              <svg className="h-8 w-8 text-green-400" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
               </svg>
             ) : (
-              <svg className="h-7 w-7 text-red-500" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+              <svg className="h-8 w-8 text-white" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
               </svg>
             )}
@@ -42,12 +42,10 @@ function Toast({ type, onClose }) {
 
           {/* Text */}
           <div>
-            <p className={`text-base font-semibold ${
-              isSuccess ? "text-[#0c0c2a]" : "text-red-600"
-            }`}>
+            <p className="text-xl font-semibold">
               {isSuccess ? "Message sent!" : "Something went wrong"}
             </p>
-            <p className="mt-1 text-sm text-[#4b4b6a]">
+            <p className="mt-2 text-sm leading-6 text-white/70">
               {isSuccess
                 ? "Thank you for reaching out. We will get back to you soon."
                 : "Please try again or contact us directly by phone."}
@@ -57,7 +55,7 @@ function Toast({ type, onClose }) {
           {/* Close button */}
           <button
             onClick={onClose}
-            className="rounded-full border border-[#00004d]/15 px-5 py-2 text-xs font-semibold uppercase tracking-[0.3em] text-[#00004d] transition hover:bg-[#00004d]/5"
+            className="rounded-full border border-white/30 px-6 py-2.5 text-xs font-semibold uppercase tracking-[0.3em] text-white transition hover:bg-white/10"
           >
             Close
           </button>
@@ -69,6 +67,7 @@ function Toast({ type, onClose }) {
 
 export default function ContactPage() {
   const [status, setStatus] = useState("idle");
+  const lastSubmitRef = useRef(0);
 
   function handleClose() {
     setStatus("idle");
@@ -76,6 +75,15 @@ export default function ContactPage() {
 
   async function handleSubmit(e) {
     e.preventDefault();
+
+    // Rate limit: prevent submission more than once every 60 seconds
+    const now = Date.now();
+    if (now - lastSubmitRef.current < 60000) {
+      alert("Please wait a moment before sending another message.");
+      return;
+    }
+    lastSubmitRef.current = now;
+
     setStatus("loading");
 
     const formData = new FormData(e.target);

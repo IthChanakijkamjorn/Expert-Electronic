@@ -1,12 +1,45 @@
 import { NextResponse } from 'next/server';
 
+// Simple in-memory rate limit: max 1 submission per IP per 60 seconds
+const rateLimitMap = new Map();
+
 export async function POST(request) {
   try {
+    // Rate limiting by IP
+    const ip =
+      request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
+      request.headers.get('x-real-ip') ||
+      'unknown';
+
+    const now = Date.now();
+    const lastSubmit = rateLimitMap.get(ip) || 0;
+
+    if (now - lastSubmit < 60000) {
+      return NextResponse.json(
+        { error: 'Too many requests. Please wait before submitting again.' },
+        { status: 429 }
+      );
+    }
+    rateLimitMap.set(ip, now);
+
+    // Clean up old entries every 100 requests
+    if (rateLimitMap.size > 100) {
+      for (const [key, time] of rateLimitMap.entries()) {
+        if (now - time > 60000) rateLimitMap.delete(key);
+      }
+    }
+
     const body = await request.json();
     const { fullName, email, company, topic, message } = body;
 
     if (!fullName || !email || !message) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+    }
+
+    // Basic honeypot / bot check: message should not contain http links
+    const urlPattern = /https?:\/\//i;
+    if (urlPattern.test(message) && urlPattern.test(fullName)) {
+      return NextResponse.json({ error: 'Invalid submission.' }, { status: 400 });
     }
 
     const res = await fetch('https://api.resend.com/emails', {
