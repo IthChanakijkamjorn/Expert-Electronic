@@ -1,12 +1,78 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import SiteHeader from "../_components/site-header";
 import SiteShell from "../_components/site-shell";
 import { playfair } from "../_components/brand-fonts";
 
+function Toast({ type, onClose }) {
+  useEffect(() => {
+    const timer = setTimeout(onClose, 3000);
+    return () => clearTimeout(timer);
+  }, [onClose]);
+
+  const isSuccess = type === "success";
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center pointer-events-none">
+      <div
+        className={`pointer-events-auto mx-4 w-full max-w-sm rounded-3xl border p-6 shadow-[0_25px_60px_rgba(0,0,0,0.18)] animate-fade-up ${
+          isSuccess
+            ? "border-green-200 bg-white"
+            : "border-red-100 bg-white"
+        }`}
+      >
+        <div className="flex flex-col items-center gap-4 text-center">
+          {/* Icon */}
+          <div
+            className={`flex h-14 w-14 items-center justify-center rounded-full ${
+              isSuccess ? "bg-green-50" : "bg-red-50"
+            }`}
+          >
+            {isSuccess ? (
+              <svg className="h-7 w-7 text-green-600" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+              </svg>
+            ) : (
+              <svg className="h-7 w-7 text-red-500" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            )}
+          </div>
+
+          {/* Text */}
+          <div>
+            <p className={`text-base font-semibold ${
+              isSuccess ? "text-[#0c0c2a]" : "text-red-600"
+            }`}>
+              {isSuccess ? "Message sent!" : "Something went wrong"}
+            </p>
+            <p className="mt-1 text-sm text-[#4b4b6a]">
+              {isSuccess
+                ? "Thank you for reaching out. We will get back to you soon."
+                : "Please try again or contact us directly by phone."}
+            </p>
+          </div>
+
+          {/* Close button */}
+          <button
+            onClick={onClose}
+            className="rounded-full border border-[#00004d]/15 px-5 py-2 text-xs font-semibold uppercase tracking-[0.3em] text-[#00004d] transition hover:bg-[#00004d]/5"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function ContactPage() {
   const [status, setStatus] = useState("idle");
+
+  function handleClose() {
+    setStatus("idle");
+  }
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -42,6 +108,12 @@ export default function ContactPage() {
   return (
     <SiteShell>
       <SiteHeader />
+
+      {/* Toast popup */}
+      {(status === "success" || status === "error") && (
+        <Toast type={status} onClose={handleClose} />
+      )}
+
       <main className="relative pt-28">
         {/* Contact info + form */}
         <section className="mx-auto w-full max-w-6xl px-6 pb-16 pt-10 sm:px-10">
@@ -172,17 +244,6 @@ export default function ContactPage() {
               >
                 {status === "loading" ? "Sending..." : "Send Message"}
               </button>
-
-              {status === "success" && (
-                <p className="mt-3 text-xs text-green-600 font-semibold">
-                  ✅ Message sent! We will get back to you soon.
-                </p>
-              )}
-              {status === "error" && (
-                <p className="mt-3 text-xs text-red-500 font-semibold">
-                  ❌ Something went wrong. Please try again.
-                </p>
-              )}
             </form>
           </div>
         </section>

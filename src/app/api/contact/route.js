@@ -5,9 +5,6 @@ export async function POST(request) {
     const body = await request.json();
     const { fullName, email, company, topic, message } = body;
 
-    console.log('Form received:', { fullName, email, topic });
-    console.log('API key exists:', !!process.env.RESEND_API_KEY);
-
     if (!fullName || !email || !message) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
@@ -19,8 +16,9 @@ export async function POST(request) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        from: 'Expert Electronic <onboarding@resend.dev>',
-        to: 'ithcha2525@gmail.com',
+        from: 'Expert Electronic <auth@expertelectronic.co.th>',
+        to: 'admin@expertelectronic.co.th',
+        reply_to: email,
         subject: `New enquiry from ${fullName}`,
         html: `
           <h2>New Contact Form Submission</h2>
@@ -35,8 +33,6 @@ export async function POST(request) {
     });
 
     const resBody = await res.text();
-    console.log('Resend status:', res.status);
-    console.log('Resend response:', resBody);
 
     if (!res.ok) {
       return NextResponse.json({ error: resBody }, { status: 500 });
@@ -44,7 +40,6 @@ export async function POST(request) {
 
     return NextResponse.json({ success: true }, { status: 200 });
   } catch (err) {
-    console.log('Exception:', err.message);
     return NextResponse.json({ error: err.message }, { status: 500 });
   }
 }
