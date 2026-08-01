@@ -63,45 +63,70 @@ export default function ContactPage() {
 
           <div className="mt-10 grid gap-8 lg:grid-cols-[1.05fr_1fr]">
             <div
-              className="rounded-3xl border border-white/70 bg-white/70 p-6 shadow-[0_18px_40px_rgba(0,0,77,0.12)] animate-fade-up"
+              className="flex flex-col gap-6 animate-fade-up"
               style={{ animationDelay: "120ms" }}
             >
-              <h2
-                className={`${playfair.className} text-2xl font-semibold text-[#121233]`}
-              >
-                Direct line
-              </h2>
-              <p className="mt-3 text-sm leading-6 text-[#4b4b6a]">
-                We design and install MATV, sound systems, LED displays, and
-                CCTV. Share the basics and we will match you with the right
-                specialist.
-              </p>
-              <div className="mt-6 space-y-4 text-sm text-[#2f2f4b]">
-                <div>
-                  <p className="text-xs uppercase tracking-[0.3em] text-[#00004d]/60">
-                    Email
-                  </p>
-                  <p className="font-semibold">admin@expertelectronic.co.th</p>
+              {/* Direct line card */}
+              <div className="rounded-3xl border border-white/70 bg-white/70 p-6 shadow-[0_18px_40px_rgba(0,0,77,0.12)]">
+                <h2
+                  className={`${playfair.className} text-2xl font-semibold text-[#121233]`}
+                >
+                  Direct line
+                </h2>
+                <p className="mt-3 text-sm leading-6 text-[#4b4b6a]">
+                  We design and install MATV, sound systems, LED displays, and
+                  CCTV. Share the basics and we will match you with the right
+                  specialist.
+                </p>
+                <div className="mt-6 space-y-4 text-sm text-[#2f2f4b]">
+                  <div>
+                    <p className="text-xs uppercase tracking-[0.3em] text-[#00004d]/60">
+                      Email
+                    </p>
+                    <p className="font-semibold">admin@expertelectronic.co.th</p>
+                  </div>
+                  <div>
+                    <p className="text-xs uppercase tracking-[0.3em] text-[#00004d]/60">
+                      Phone
+                    </p>
+                    <p className="font-semibold">02 729 4225-6</p>
+                  </div>
                 </div>
-                <div>
-                  <p className="text-xs uppercase tracking-[0.3em] text-[#00004d]/60">
-                    Phone
-                  </p>
-                  <p className="font-semibold">02 729 4225-6</p>
+                <div className="mt-8 text-sm text-[#4b4b6a]">
+                  <p className="font-semibold text-[#00004d]">Office hours</p>
+                  <p className="mt-2">Monday – Friday: 08:30 – 17:30</p>
+                  <p className="mt-1">Closed on Saturday &amp; Sunday</p>
+                </div>
+                <div className="mt-6 text-sm text-[#4b4b6a]">
+                  <p className="font-semibold text-[#00004d]">Helpful details</p>
+                  <ul className="mt-2 space-y-2">
+                    <li>Site address and size</li>
+                    <li>Systems needed (MATV, sound, LED, CCTV)</li>
+                    <li>Preferred survey and installation window</li>
+                  </ul>
                 </div>
               </div>
-              <div className="mt-8 text-sm text-[#4b4b6a]">
-                <p className="font-semibold text-[#00004d]">Office hours</p>
-                <p className="mt-2">Monday – Friday: 08:30 – 17:30</p>
-                <p className="mt-1">Closed on Saturday &amp; Sunday</p>
-              </div>
-              <div className="mt-6 text-sm text-[#4b4b6a]">
-                <p className="font-semibold text-[#00004d]">Helpful details</p>
-                <ul className="mt-2 space-y-2">
-                  <li>Site address and size</li>
-                  <li>Systems needed (MATV, sound, LED, CCTV)</li>
-                  <li>Preferred survey and installation window</li>
-                </ul>
+
+              {/* Map card */}
+              <div className="overflow-hidden rounded-3xl border border-white/70 shadow-[0_18px_40px_rgba(0,0,77,0.12)]">
+                <div className="bg-white/70 px-5 py-4 backdrop-blur-sm">
+                  <p className="text-xs font-semibold uppercase tracking-[0.35em] text-[#00004d]/60">
+                    Our Location
+                  </p>
+                  <p className="mt-0.5 text-sm font-semibold text-[#121233]">
+                    Expert Electronic &amp; Communication
+                  </p>
+                </div>
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d242.19314014984238!2d100.66879092173525!3d13.773431235696176!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x311d617e3d712dc1%3A0x6ba8fa786858ff4b!2z4Lia4Lij4Li04Lip4Lix4LiXIOC5gOC4reC5h-C4geC4i-C5jOC5gOC4nuC4tOC4o-C5jOC4lyDguK3guLTguYDguKXguYfguITguYLguJfguKPguJnguLTguIQg4LmB4Lit4LiZ4LiU4LmMIOC4hOC4reC4oeC4oeC4ueC4meC4tOC5gOC4hOC4iuC4seC5iOC4mSDguIjguLPguIHguLHguJQ!5e0!3m2!1sth!2sth!4v1785571092173!5m2!1sth!2sth"
+                  width="100%"
+                  height="260"
+                  style={{ border: 0, display: "block" }}
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="strict-origin-when-cross-origin"
+                  title="Expert Electronic & Communication location"
+                />
               </div>
             </div>
 
