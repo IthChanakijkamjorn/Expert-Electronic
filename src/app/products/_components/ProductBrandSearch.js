@@ -7,7 +7,7 @@ const brandLogos = {
   BOSE: "/icons/BOSE LOGO.jpg",
   ITC: "/icons/ITC LOGO.jpg",
   WISI: "/icons/WISI LOGO.png",
-  MAXHUB: "/icons/MAXHUB LOGO.png",
+  MAXHUB: "/icons/MAXHUB LOGO.jpg",
 };
 
 export default function ProductBrandSearch({ brands, counts, playfairClassName }) {
