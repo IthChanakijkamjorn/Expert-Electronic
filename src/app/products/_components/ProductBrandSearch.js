@@ -8,6 +8,7 @@ const brandLogos = {
   ITC: "/icons/ITC LOGO.jpg",
   WISI: "/icons/WISI LOGO.png",
   MAXHUB: "/icons/MAXHUB LOGO.jpg",
+  DAHUA: "/icons/DAHUA LOGO.png",
 };
 
 export default function ProductBrandSearch({ brands, counts, playfairClassName }) {
