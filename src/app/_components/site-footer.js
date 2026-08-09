@@ -1,31 +1,37 @@
+"use client";
+
 import Link from "next/link";
+import { t } from "@/lib/translations";
+import { useLanguage } from "@/lib/language-context";
 
 export default function SiteFooter() {
+  const { lang } = useLanguage();
+  const links = [
+    { label: t.nav.home[lang], href: "/" },
+    { label: t.nav.products[lang], href: "/products" },
+    { label: t.nav.solutions[lang], href: "/solutions" },
+    { label: t.nav.contact[lang], href: "/contact" },
+  ];
+
   return (
     <footer className="relative border-t border-[#00004d]/10 bg-white/60 backdrop-blur-sm">
       <div className="mx-auto w-full max-w-6xl px-6 py-14 sm:px-10">
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
-
-          {/* Company Info */}
           <div className="flex flex-col gap-3">
             <p className="text-xs font-semibold uppercase tracking-[0.35em] text-[#00004d]/50">
-              Company
+              {t.footer.companyLabel[lang]}
             </p>
             <p className="text-sm font-semibold text-[#0c0c2a]">
               Expert Electronic &amp; Communication Co., Ltd.
             </p>
-            <p className="text-sm leading-6 text-[#4b4b6a]">
-              51/2 Soi Ramkhamhaeng 96,<br />
-              Ramkhamhaeng Road,<br />
-              Saphan Sung District,<br />
-              Bangkok 10240
+            <p className="whitespace-pre-line text-sm leading-6 text-[#4b4b6a]">
+              {t.footer.address[lang]}
             </p>
           </div>
 
-          {/* Contact */}
           <div className="flex flex-col gap-3">
             <p className="text-xs font-semibold uppercase tracking-[0.35em] text-[#00004d]/50">
-              Contact
+              {t.footer.contactLabel[lang]}
             </p>
             <a
               href="tel:027294225"
@@ -50,15 +56,10 @@ export default function SiteFooter() {
           {/* Quick Links */}
           <div className="flex flex-col gap-3">
             <p className="text-xs font-semibold uppercase tracking-[0.35em] text-[#00004d]/50">
-              Quick Links
+              {t.footer.quickLinks[lang]}
             </p>
             <nav className="flex flex-col gap-2">
-              {[
-                { label: "Home", href: "/" },
-                { label: "Products", href: "/products" },
-                { label: "Solutions", href: "/solutions" },
-                { label: "Contact", href: "/contact" },
-              ].map((link) => (
+              {links.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
@@ -71,10 +72,9 @@ export default function SiteFooter() {
           </div>
         </div>
 
-        {/* Bottom bar */}
         <div className="mt-12 border-t border-[#00004d]/10 pt-6">
           <p className="text-center text-xs text-[#00004d]/40">
-            &copy; 2026 Expert Electronic &amp; Communication. All rights reserved.
+            {t.footer.copyright[lang]}
           </p>
         </div>
       </div>

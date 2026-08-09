@@ -1,11 +1,15 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import { useLanguage } from "@/lib/language-context";
+import { t } from "@/lib/translations";
 import SiteHeader from "../_components/site-header";
 import SiteShell from "../_components/site-shell";
 import { playfair } from "../_components/brand-fonts";
 
 function Toast({ type, onClose }) {
+  const { lang } = useLanguage();
+
   useEffect(() => {
     const timer = setTimeout(onClose, 5000);
     return () => clearTimeout(timer);
@@ -38,19 +42,21 @@ function Toast({ type, onClose }) {
           </div>
           <div>
             <p className="text-xl font-semibold">
-              {isSuccess ? "Message sent!" : "Something went wrong"}
+              {isSuccess
+                ? t.contact.toastSuccessTitle[lang]
+                : t.contact.toastErrorTitle[lang]}
             </p>
             <p className="mt-2 text-sm leading-6 text-white/70">
               {isSuccess
-                ? "Thank you for reaching out. We will get back to you soon."
-                : "Please try again or contact us directly by phone."}
+                ? t.contact.toastSuccessSub[lang]
+                : t.contact.toastErrorSub[lang]}
             </p>
           </div>
           <button
             onClick={onClose}
             className="rounded-full border border-white/30 px-6 py-2.5 text-xs font-semibold uppercase tracking-[0.3em] text-white transition hover:bg-white/10"
           >
-            Close
+            {t.contact.toastClose[lang]}
           </button>
         </div>
       </div>
@@ -72,6 +78,7 @@ function useRecaptcha() {
 }
 
 export default function ContactPage() {
+  const { lang } = useLanguage();
   const [status, setStatus] = useState("idle");
   const lastSubmitRef = useRef(0);
   useRecaptcha();
@@ -85,7 +92,7 @@ export default function ContactPage() {
 
     const now = Date.now();
     if (now - lastSubmitRef.current < 60000) {
-      alert("Please wait a moment before sending another message.");
+      alert(t.contact.rateLimitMsg[lang]);
       return;
     }
     lastSubmitRef.current = now;
@@ -149,15 +156,15 @@ export default function ContactPage() {
             style={{ animationDelay: "0ms" }}
           >
             <p className="text-xs font-semibold uppercase tracking-[0.4em] text-[#00004d]/70">
-              Contact Us
+              {t.contact.eyebrow[lang]}
             </p>
             <h1
               className={`${playfair.className} text-4xl font-semibold text-[#0c0c2a] sm:text-5xl`}
             >
-              Get in touch with us
+              {t.contact.heading[lang]}
             </h1>
             <p className="text-lg leading-8 text-[#3d3d5f]">
-              Whether you have a general question, want to purchase a product, or need a full system design — we are here to help.
+              {t.contact.sub[lang]}
             </p>
           </div>
 
@@ -168,32 +175,32 @@ export default function ContactPage() {
               style={{ animationDelay: "120ms" }}
             >
               <h2 className={`${playfair.className} text-2xl font-semibold text-[#121233]`}>
-                Direct line
+                {t.contact.directLine[lang]}
               </h2>
               <p className="mt-3 text-sm leading-6 text-[#4b4b6a]">
-                We design and install MATV, sound systems, LED displays, and CCTV. Share the basics and we will match you with the right specialist.
+                {t.contact.directSub[lang]}
               </p>
               <div className="mt-6 space-y-4 text-sm text-[#2f2f4b]">
                 <div>
-                  <p className="text-xs uppercase tracking-[0.3em] text-[#00004d]/60">Email</p>
+                  <p className="text-xs uppercase tracking-[0.3em] text-[#00004d]/60">{t.contact.emailLabel[lang]}</p>
                   <p className="font-semibold">admin@expertelectronic.co.th</p>
                 </div>
                 <div>
-                  <p className="text-xs uppercase tracking-[0.3em] text-[#00004d]/60">Phone</p>
+                  <p className="text-xs uppercase tracking-[0.3em] text-[#00004d]/60">{t.contact.phoneLabel[lang]}</p>
                   <p className="font-semibold">02 729 4225-6</p>
                 </div>
               </div>
               <div className="mt-8 text-sm text-[#4b4b6a]">
-                <p className="font-semibold text-[#00004d]">Office hours</p>
-                <p className="mt-2">Monday – Friday: 08:30 – 17:30</p>
-                <p className="mt-1">Closed on Saturday &amp; Sunday</p>
+                <p className="font-semibold text-[#00004d]">{t.contact.officeHours[lang]}</p>
+                <p className="mt-2">{t.contact.officeTime[lang]}</p>
+                <p className="mt-1">{t.contact.closed[lang]}</p>
               </div>
               <div className="mt-6 text-sm text-[#4b4b6a]">
-                <p className="font-semibold text-[#00004d]">Helpful details</p>
+                <p className="font-semibold text-[#00004d]">{t.contact.helpfulDetails[lang]}</p>
                 <ul className="mt-2 space-y-2">
-                  <li>Site address and size</li>
-                  <li>Systems needed (MATV, sound, LED, CCTV)</li>
-                  <li>Preferred survey and installation window</li>
+                  <li>{t.contact.detail1[lang]}</li>
+                  <li>{t.contact.detail2[lang]}</li>
+                  <li>{t.contact.detail3[lang]}</li>
                 </ul>
               </div>
             </div>
@@ -205,51 +212,51 @@ export default function ContactPage() {
             >
               <div className="grid gap-5 sm:grid-cols-2">
                 <label className="text-xs font-semibold uppercase tracking-[0.35em] text-[#00004d]/70">
-                  Full name
+                  {t.contact.formName[lang]}
                   <input
                     className="mt-2 w-full rounded-2xl border border-[#00004d]/15 bg-white px-4 py-3 text-sm text-[#15152e] shadow-sm outline-none transition focus:border-[#00004d]/50"
                     name="fullName"
-                    placeholder="Your name"
+                    placeholder={t.contact.formNamePlaceholder[lang]}
                     required
                     type="text"
                   />
                 </label>
                 <label className="text-xs font-semibold uppercase tracking-[0.35em] text-[#00004d]/70">
-                  Email
+                  {t.contact.formEmail[lang]}
                   <input
                     className="mt-2 w-full rounded-2xl border border-[#00004d]/15 bg-white px-4 py-3 text-sm text-[#15152e] shadow-sm outline-none transition focus:border-[#00004d]/50"
                     name="email"
-                    placeholder="you@example.com"
+                    placeholder={t.contact.emailPlaceholder[lang]}
                     required
                     type="email"
                   />
                 </label>
                 <label className="text-xs font-semibold uppercase tracking-[0.35em] text-[#00004d]/70">
-                  Company
+                  {t.contact.formCompany[lang]}
                   <input
                     className="mt-2 w-full rounded-2xl border border-[#00004d]/15 bg-white px-4 py-3 text-sm text-[#15152e] shadow-sm outline-none transition focus:border-[#00004d]/50"
                     name="company"
-                    placeholder="Company or site"
+                    placeholder={t.contact.formCompanyPlaceholder[lang]}
                     type="text"
                   />
                 </label>
                 <label className="text-xs font-semibold uppercase tracking-[0.35em] text-[#00004d]/70">
-                  Topic
+                  {t.contact.formTopic[lang]}
                   <select
                     className="mt-2 w-full rounded-2xl border border-[#00004d]/15 bg-white px-4 py-3 text-sm text-[#15152e] shadow-sm outline-none transition focus:border-[#00004d]/50"
                     name="topic"
                   >
-                    <option>General Inquiry</option>
-                    <option>Product Purchase</option>
-                    <option>Project Planning</option>
+                    <option>{t.contact.topicGeneral[lang]}</option>
+                    <option>{t.contact.topicPurchase[lang]}</option>
+                    <option>{t.contact.topicProject[lang]}</option>
                   </select>
                 </label>
                 <label className="text-xs font-semibold uppercase tracking-[0.35em] text-[#00004d]/70 sm:col-span-2">
-                  Message
+                  {t.contact.formMessage[lang]}
                   <textarea
                     className="mt-2 w-full resize-none rounded-2xl border border-[#00004d]/15 bg-white px-4 py-3 text-sm text-[#15152e] shadow-sm outline-none transition focus:border-[#00004d]/50"
                     name="message"
-                    placeholder="Tell us how we can help you."
+                    placeholder={t.contact.formMessagePlaceholder[lang]}
                     required
                     rows={6}
                   />
@@ -261,20 +268,20 @@ export default function ContactPage() {
                 type="submit"
                 disabled={status === "loading"}
               >
-                {status === "loading" ? "Sending..." : "Send Message"}
+                {status === "loading"
+                  ? t.contact.sending[lang]
+                  : t.contact.sendButton[lang]}
               </button>
 
-              {/* reCAPTCHA badge notice (required by Google) */}
               <p className="mt-4 text-center text-[10px] text-[#00004d]/40">
-                Protected by reCAPTCHA &mdash;{" "}
-                <a href="https://policies.google.com/privacy" target="_blank" rel="noreferrer" className="underline">Privacy</a>{" "}&amp;{" "}
-                <a href="https://policies.google.com/terms" target="_blank" rel="noreferrer" className="underline">Terms</a>
+                {t.contact.recaptchaProtected[lang]} &mdash;{" "}
+                <a href="https://policies.google.com/privacy" target="_blank" rel="noreferrer" className="underline">{t.contact.privacy[lang]}</a>{" "}&amp;{" "}
+                <a href="https://policies.google.com/terms" target="_blank" rel="noreferrer" className="underline">{t.contact.terms[lang]}</a>
               </p>
             </form>
           </div>
         </section>
 
-        {/* Full-width map strip above footer */}
         <div className="w-full animate-fade-up" style={{ animationDelay: "300ms" }}>
           <iframe
             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3873.8!2d100.66879092173525!3d13.773431235696176!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x311d617e3d712dc1%3A0x6ba8fa786858ff4b!2z4Lia4Lij4Li04Lip4Lix4LiXIOC5gOC4reC5h-C4geC4i-C5jOC5gOC4nuC4tOC4o-C5jOC4lyDguK3guLTguYDguKXguYfguITguYLguJfguKPguJnguLTguIQg4LmB4Lit4LiZ4LiU4LmMIOC4hOC4reC4oeC4oeC4ueC4meC4tOC5gOC4hOC4iuC4seC5iOC4mSDguIjguLPguIHguLHguJQ!5e0!3m2!1sth!2sth!4v1785571092173!5m2!1sth!2sth"
@@ -284,7 +291,7 @@ export default function ContactPage() {
             allowFullScreen
             loading="lazy"
             referrerPolicy="strict-origin-when-cross-origin"
-            title="Expert Electronic & Communication location"
+            title={t.contact.mapTitle[lang]}
           />
         </div>
       </main>

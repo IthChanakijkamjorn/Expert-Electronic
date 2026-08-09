@@ -1,4 +1,5 @@
 import { Geist, Geist_Mono } from "next/font/google";
+import LanguageProviderWrapper from "./_components/language-provider-wrapper";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -13,14 +14,14 @@ const geistMono = Geist_Mono({
 
 export const metadata = {
   title: "Expert Electronic & Communication",
-  description: "We plan, design, and install MATV, sound, LED, and CCTV systems for homes, venues, and commercial sites across Thailand.",
+  description: "เราวางแผน ออกแบบ และติดตั้งระบบ MATV ระบบเสียง LED และ CCTV สำหรับที่พักอาศัย สถานที่จัดงาน และอาคารพาณิชย์ทั่วประเทศไทย",
   icons: {
     icon: "/logo.png",
     apple: "/logo.png",
   },
   openGraph: {
     title: "Expert Electronic & Communication",
-    description: "We plan, design, and install MATV, sound, LED, and CCTV systems for homes, venues, and commercial sites across Thailand.",
+    description: "เราวางแผน ออกแบบ และติดตั้งระบบ MATV ระบบเสียง LED และ CCTV สำหรับที่พักอาศัย สถานที่จัดงาน และอาคารพาณิชย์ทั่วประเทศไทย",
     url: "https://expertelectronic.co.th",
     siteName: "Expert Electronic & Communication",
     images: [
@@ -30,7 +31,7 @@ export const metadata = {
         height: 512,
       },
     ],
-    locale: "en_US",
+    locale: "th_TH",
     type: "website",
   },
 };
@@ -38,10 +39,12 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html
-      lang="en"
+      lang="th"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        <LanguageProviderWrapper>{children}</LanguageProviderWrapper>
+      </body>
     </html>
   );
 }

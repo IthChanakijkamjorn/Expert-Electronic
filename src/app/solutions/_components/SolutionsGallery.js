@@ -1,20 +1,28 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
+import { useLanguage } from "@/lib/language-context";
+import { t } from "@/lib/translations";
 
 export default function SolutionsGallery({ projects }) {
+  const { lang } = useLanguage();
   const [lightbox, setLightbox] = useState(null);
-  // lightbox = { images: [], index: 0 }
+
+  useEffect(() => {
+    document.body.style.overflow = lightbox ? "hidden" : "";
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [lightbox]);
 
   function openLightbox(images, index) {
     setLightbox({ images, index });
-    document.body.style.overflow = "hidden";
   }
 
   function closeLightbox() {
     setLightbox(null);
-    document.body.style.overflow = "";
   }
 
   function prev() {
@@ -25,10 +33,9 @@ export default function SolutionsGallery({ projects }) {
     setLightbox((lb) => ({ ...lb, index: (lb.index + 1) % lb.images.length }));
   }
 
-  // Group by year descending
   const byYear = {};
   projects.forEach((p) => {
-    const y = p.year ?? "Unknown";
+    const y = p.year ?? t.solutions.unknownYear[lang];
     if (!byYear[y]) byYear[y] = [];
     byYear[y].push(p);
   });
@@ -38,13 +45,11 @@ export default function SolutionsGallery({ projects }) {
     <>
       {years.map((year) => (
         <section key={year} className="mb-20">
-          {/* Year heading */}
           <div className="mb-8 flex items-center gap-4">
             <h2 className="text-3xl font-bold text-[#00004d]">{year}</h2>
             <div className="h-px flex-1 bg-[#00004d]/10" />
           </div>
 
-          {/* Project cards — 2 per row */}
           <div className="grid gap-8 sm:grid-cols-2">
             {byYear[year].map((project, pi) => (
               <div
@@ -52,13 +57,11 @@ export default function SolutionsGallery({ projects }) {
                 className="rounded-3xl border border-white/70 bg-white/70 p-6 shadow-[0_18px_40px_rgba(0,0,77,0.12)] animate-fade-up"
                 style={{ animationDelay: `${pi * 80}ms` }}
               >
-                {/* Title + location */}
                 <p className="text-xs font-semibold uppercase tracking-[0.35em] text-[#00004d]/50">
                   {project.location ?? ""}
                 </p>
                 <h3 className="mt-1 text-xl font-semibold text-[#0c0c2a]">{project.title}</h3>
 
-                {/* Image grid */}
                 {project.images && project.images.length > 0 && (
                   <div className="mt-4 grid grid-cols-2 gap-2">
                     {project.images.slice(0, 4).map((img, i) => {
@@ -101,32 +104,28 @@ export default function SolutionsGallery({ projects }) {
             className="relative mx-4 w-full max-w-4xl"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Close */}
             <button
               onClick={closeLightbox}
               className="absolute -top-10 right-0 text-white/70 hover:text-white text-sm font-semibold uppercase tracking-widest"
             >
-              Close ✕
+              {t.solutions.close[lang]}
             </button>
 
-            {/* Image */}
             <div className="relative aspect-[16/10] w-full overflow-hidden rounded-3xl bg-black">
               <Image
                 src={lightbox.images[lightbox.index].url}
-                alt={lightbox.images[lightbox.index].caption ?? "Project image"}
+                alt={lightbox.images[lightbox.index].caption ?? t.solutions.projectImage[lang]}
                 fill
                 className="object-contain"
               />
             </div>
 
-            {/* Caption */}
             {lightbox.images[lightbox.index].caption && (
               <p className="mt-3 text-center text-sm text-white/70">
                 {lightbox.images[lightbox.index].caption}
               </p>
             )}
 
-            {/* Prev / Next */}
             {lightbox.images.length > 1 && (
               <>
                 <button
@@ -144,7 +143,6 @@ export default function SolutionsGallery({ projects }) {
               </>
             )}
 
-            {/* Dots */}
             {lightbox.images.length > 1 && (
               <div className="mt-4 flex justify-center gap-2">
                 {lightbox.images.map((_, i) => (
