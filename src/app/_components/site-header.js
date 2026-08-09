@@ -2,21 +2,23 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { t } from "@/lib/translations";
+import { useLanguage } from "@/lib/language-context";
+import LanguageSwitcher from "./language-switcher";
 import { playfair } from "./brand-fonts";
 import { useState, useEffect, useRef } from "react";
 
-const navItems = [
-  { label: "Home", href: "/" },
-  { label: "Products", href: "/products" },
-  { label: "Solutions", href: "/solutions" },
-  { label: "Contact", href: "/contact" },
-];
-
 export default function SiteHeader() {
+  const { lang } = useLanguage();
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef(null);
+  const navItems = [
+    { label: t.nav.home[lang], href: "/" },
+    { label: t.nav.products[lang], href: "/products" },
+    { label: t.nav.solutions[lang], href: "/solutions" },
+    { label: t.nav.contact[lang], href: "/contact" },
+  ];
 
-  // Close menu when clicking outside
   useEffect(() => {
     function handleClick(e) {
       if (menuRef.current && !menuRef.current.contains(e.target)) {
@@ -57,17 +59,22 @@ export default function SiteHeader() {
               </Link>
             ))}
           </nav>
+          <div className="hidden md:block">
+            <LanguageSwitcher />
+          </div>
 
-          {/* Mobile menu */}
           <div className="relative md:hidden" ref={menuRef}>
-            <button
-              onClick={() => setMenuOpen((v) => !v)}
-              className="cursor-pointer rounded-full border border-white/20 px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.35em] text-white/90 transition hover:bg-white/10"
-              aria-expanded={menuOpen}
-              aria-label="Toggle menu"
-            >
-              Menu
-            </button>
+            <div className="flex items-center gap-2">
+              <LanguageSwitcher />
+              <button
+                onClick={() => setMenuOpen((v) => !v)}
+                className="cursor-pointer rounded-full border border-white/20 px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.35em] text-white/90 transition hover:bg-white/10"
+                aria-expanded={menuOpen}
+                aria-label={t.nav.menu[lang]}
+              >
+                {t.nav.menu[lang]}
+              </button>
+            </div>
 
             <div
               className={`absolute right-0 mt-3 w-56 rounded-2xl border border-white/15 bg-[#05054f] p-3 shadow-[0_18px_40px_rgba(0,0,0,0.35)] transition-all duration-200 origin-top-right ${
@@ -90,6 +97,9 @@ export default function SiteHeader() {
                     {item.label}
                   </Link>
                 ))}
+                <div className="px-3 py-2">
+                  <LanguageSwitcher />
+                </div>
               </nav>
             </div>
           </div>

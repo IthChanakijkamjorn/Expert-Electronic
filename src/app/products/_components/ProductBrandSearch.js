@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { useLanguage } from "@/lib/language-context";
+import { t } from "@/lib/translations";
 
 const brandLogos = {
   BOSE: "/icons/BOSE LOGO.jpg",
@@ -12,6 +14,8 @@ const brandLogos = {
 };
 
 export default function ProductBrandSearch({ brands, counts, playfairClassName }) {
+  const { lang } = useLanguage();
+
   if (brands.length === 0) return null;
 
   return (
@@ -26,13 +30,13 @@ export default function ProductBrandSearch({ brands, counts, playfairClassName }
           <div className="flex items-start justify-between gap-4">
             <div className="flex-1">
               <p className="text-xs font-semibold uppercase tracking-[0.35em] text-[#00004d]/60">
-                {counts[brand]} product{counts[brand] !== 1 ? "s" : ""}
+                {t.products.productCount[lang](counts[brand])}
               </p>
               <h2 className={`${playfairClassName} mt-2 text-2xl font-semibold text-[#121233] group-hover:text-[#00004d]`}>
                 {brand}
               </h2>
               <p className="mt-4 text-xs font-semibold uppercase tracking-[0.3em] text-[#00004d]">
-                View categories &rarr;
+                {t.products.viewCategories[lang]} &rarr;
               </p>
             </div>
             {brandLogos[brand] && (
