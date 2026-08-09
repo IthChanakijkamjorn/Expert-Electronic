@@ -1,7 +1,5 @@
 "use client";
-
 import { useLanguage } from "@/lib/language-context";
-import { t } from "@/lib/translations";
 
 export default function LanguageSwitcher() {
   const { lang, toggleLang } = useLanguage();
@@ -9,10 +7,15 @@ export default function LanguageSwitcher() {
   return (
     <button
       onClick={toggleLang}
-      className="rounded-full border border-white/30 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.35em] text-white/80 transition hover:bg-white/10 hover:text-white"
-      aria-label={t.nav.switchLanguage[lang]}
+      aria-label="Switch language"
+      className="flex items-center gap-0 rounded-full bg-white/15 p-0.5 text-[10px] font-bold uppercase tracking-[0.25em] backdrop-blur-sm transition hover:bg-white/25"
     >
-      {lang === "th" ? "EN" : "TH"}
+      <span className={`rounded-full px-3 py-1.5 transition-all ${lang === "th" ? "bg-white text-[#00004d] shadow-sm" : "text-white/60 hover:text-white/90"}`}>
+        TH
+      </span>
+      <span className={`rounded-full px-3 py-1.5 transition-all ${lang === "en" ? "bg-white text-[#00004d] shadow-sm" : "text-white/60 hover:text-white/90"}`}>
+        EN
+      </span>
     </button>
   );
 }
