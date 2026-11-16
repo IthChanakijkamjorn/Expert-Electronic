@@ -4,6 +4,8 @@ import { playfair } from "../_components/brand-fonts";
 import { client } from "../../lib/sanity";
 import SolutionsPageContent from "./_components/SolutionsPageContent";
 
+export const revalidate = 60;
+
 async function getProjects() {
   return client.fetch(
     `*[_type == "project"] | order(year desc, title asc) {
