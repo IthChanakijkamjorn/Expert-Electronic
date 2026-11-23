@@ -9,6 +9,13 @@ const nextConfig = {
       },
     ],
   },
+  // Printed QR codes still point at the old PHP site under /new/
+  async redirects() {
+    return [
+      { source: '/new', destination: '/', permanent: true },
+      { source: '/new/:path*', destination: '/', permanent: true },
+    ];
+  },
 };
 
 export default nextConfig;
