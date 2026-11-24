@@ -84,47 +84,12 @@ from: 'Expert Electronic <noreply@expertelectronic.co.th>',
 
 ---
 
-## Product Import Script
+## Products
 
-Located in the studio folder: `importProducts.js`
-
-### Excel file structure
-Place files in `import/` folder named as `BRANDNAME_products.xlsx`
-
-**Products sheet columns:**
-`Name` | `Brand` | `Main-Category` | `Sub-Category` | `Short Description` | `Description` | `Featured`
-
-**Specifications sheet columns:**
-`ProductName` | `tabName` | `Label` | `Value`
-
-### Image & Datasheet folders
-```
-import/
-  ITC_products.xlsx
-  WISI_products.xlsx
-  images/
-    ITC/
-      ITC TV-S8198.png
-    WISI/
-      WISI-OE-01.png
-  datasheets/
-    ITC/
-      ITC TV-S8198.pdf
-```
-
-### Running the import
-```bash
-# Set token first (required every new terminal session)
-$env:SANITY_TOKEN="your-token-here"
-
-# Import specific brand(s)
-node importProducts.js ITC
-node importProducts.js WISI
-node importProducts.js ITC WISI
-
-# Import all brands
-node importProducts.js
-```
+Products are managed in the back office (Expert-Electronic-Stock), which publishes them to Sanity.
+Edit the Excel files and photos/datasheets in the `studio` repo's `import/` folder, push, then run
+Back office → Products → Import. The Excel format is documented in the `studio` README and in
+`import/_TEMPLATE_products.xlsx`. Do not edit products in Sanity Studio or run the old `importProducts.js`.
 
 ### Category slugs (use these exact values in Excel)
 | Main Category | Slug |
